@@ -14,7 +14,7 @@ function Layout() {
   };
 
   return (
-    <main className="flex flex-col md:flex-row justify-evenly">
+    <main className="flex flex-col md:flex-row justify-evenly pt-12 md:pt-20 max-w-[375px] md:max-w-[1028px] mx-auto">
       <div className="flex flex-col gap-y-4 justify-center">
         <div className="flex justify-center">
           <img src="src/assets/check.svg" alt="" width="46" />
