@@ -4,7 +4,7 @@ type Props = {
 
 const Login = ({ setPage }: Props) => {
   return (
-    <ul className="flex flex-col gap-y-6 max-w-[304px] w-full m-auto">
+    <ul className="flex flex-col gap-y-6 mx-auto">
       <li className="text-xl md:text-2xl text-center md:text-left font-bold pt-4 md:pt-0">
         最實用的線上待辦事項服務
       </li>
