@@ -7,6 +7,7 @@ export default {
         background: "#FFD370",
         lightGray: "#EFEFEF",
         darkGray: "#9F9A91",
+        error: " #D87355",
       },
       borderRadius: {
         custom: "10px",
