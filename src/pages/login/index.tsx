@@ -18,7 +18,7 @@ const Login = ({ setPage, email }: LoginProps) => {
             className="rounded-custom px-4 py-3"
             placeholder="請輸入Email"
             id="email"
-            type="text"
+            type="email"
           />
         </div>
         <div className="flex flex-col gap-y-1">
@@ -29,13 +29,13 @@ const Login = ({ setPage, email }: LoginProps) => {
             className="rounded-custom px-4 py-3"
             placeholder="請輸入密碼"
             id="password"
-            type="text"
+            type="password"
           />
         </div>
       </ol>
       <button
         className="bg-black text-white rounded-custom px-12 py-3 font-bold max-w-[128px] m-auto"
-        type="button"
+        type="submit"
       >
         登入
       </button>
