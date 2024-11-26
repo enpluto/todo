@@ -1,11 +1,76 @@
+import { useForm } from "react-hook-form";
+
 type LoginProps = {
   setPage: React.Dispatch<React.SetStateAction<string>>;
   email: string | null;
+  setToken: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const Login = ({ setPage, email }: LoginProps) => {
+const Login = ({ setPage, email, setToken }: LoginProps) => {
+  const {
+    register,
+    handleSubmit,
+    defaultValues,
+    formState: { errors },
+    setError,
+  } = useForm({
+    defaultValues: {
+      email: email,
+      password: "",
+    },
+  });
+
+  const onsubmit = async (data) => {
+    const baseUrl = "https://todolist-api.hexschool.io";
+
+    try {
+      const response = await fetch(`${baseUrl}/users/sign_in`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+
+        switch (response.status) {
+          case 401:
+            setError("email", {
+              type: "manual",
+              message: errorData.message,
+            });
+            setError("password", {
+              type: "manual",
+              message: errorData.message,
+            });
+            break;
+          case 404:
+            setError("email", {
+              type: "manual",
+              message: "用戶不存在",
+            });
+            break;
+        }
+      }
+
+      const userData = await response.json();
+      setToken(userData.token);
+    } catch (error) {
+      console.log("錯誤:", error);
+    }
+  };
+
   return (
-    <form className="flex flex-col gap-y-6 mx-auto">
+    <form
+      className="flex flex-col gap-y-6 mx-auto"
+      onSubmit={handleSubmit(onsubmit)}
+    >
       <span className="text-xl md:text-2xl text-center md:text-left font-bold pt-4 md:pt-0">
         最實用的線上待辦事項服務
       </span>
@@ -19,7 +84,19 @@ const Login = ({ setPage, email }: LoginProps) => {
             placeholder="請輸入Email"
             id="email"
             type="email"
+            {...register("email", {
+              required: "此欄位不可為空",
+              pattern: {
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/,
+                message: "Email格式錯誤",
+              },
+            })}
           />
+          {errors.email && (
+            <span className="text-error font-bold text-sm">
+              {errors.email?.message}
+            </span>
+          )}
         </div>
         <div className="flex flex-col gap-y-1">
           <label className="text-sm font-bold" htmlFor="password">
@@ -30,7 +107,16 @@ const Login = ({ setPage, email }: LoginProps) => {
             placeholder="請輸入密碼"
             id="password"
             type="password"
+            {...register("password", {
+              required: "此欄位不可為空",
+              minLength: { value: 6, message: "長度不足6個字" },
+            })}
           />
+          {errors.password && (
+            <span className="text-error font-bold text-sm">
+              {errors.password.message}
+            </span>
+          )}
         </div>
       </ol>
       <button
