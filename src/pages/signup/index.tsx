@@ -1,10 +1,11 @@
 import { useForm } from "react-hook-form";
 
-type Props = {
+type SignUpProps = {
   setPage: React.Dispatch<React.SetStateAction<string>>;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const SignUp = ({ setPage }: Props) => {
+const SignUp = ({ setPage, setEmail }: SignUpProps) => {
   const {
     register,
     handleSubmit,
@@ -34,8 +35,8 @@ const SignUp = ({ setPage }: Props) => {
         throw new Error(errorData.message);
       }
 
-      const result = await response.json();
-      const uid = result.uid;
+      setEmail(data.email);
+      setPage("login");
     } catch (error) {
       console.log("錯誤:", error);
     }

@@ -1,15 +1,17 @@
 import Login from "./pages/login";
 import SignUp from "./pages/signup";
 import { useState } from "react";
+import { useAuth } from "./contexts/AuthContext";
 
 function Layout() {
   const [page, setPage] = useState("login");
+  const { email, setEmail } = useAuth();
 
   const SwitchPage = () => {
     return page === "login" ? (
-      <Login setPage={setPage} />
+      <Login setPage={setPage} email={email} />
     ) : (
-      <SignUp setPage={setPage} />
+      <SignUp setPage={setPage} setEmail={setEmail} />
     );
   };
 

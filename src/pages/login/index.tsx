@@ -1,8 +1,9 @@
-type Props = {
+type LoginProps = {
   setPage: React.Dispatch<React.SetStateAction<string>>;
+  email: string | null;
 };
 
-const Login = ({ setPage }: Props) => {
+const Login = ({ setPage, email }: LoginProps) => {
   return (
     <ul className="flex flex-col gap-y-6 mx-auto">
       <li className="text-xl md:text-2xl text-center md:text-left font-bold pt-4 md:pt-0">
