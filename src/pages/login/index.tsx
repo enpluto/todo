@@ -5,10 +5,10 @@ type LoginProps = {
 
 const Login = ({ setPage, email }: LoginProps) => {
   return (
-    <ul className="flex flex-col gap-y-6 mx-auto">
-      <li className="text-xl md:text-2xl text-center md:text-left font-bold pt-4 md:pt-0">
+    <form className="flex flex-col gap-y-6 mx-auto">
+      <span className="text-xl md:text-2xl text-center md:text-left font-bold pt-4 md:pt-0">
         最實用的線上待辦事項服務
-      </li>
+      </span>
       <ol className="flex flex-col gap-y-4">
         <div className="flex flex-col gap-y-1">
           <label className="text-sm font-bold" htmlFor="email">
@@ -39,13 +39,13 @@ const Login = ({ setPage, email }: LoginProps) => {
       >
         登入
       </button>
-      <li
+      <span
         className="font-bold text-center cursor-pointer"
         onClick={() => setPage("signup")}
       >
         註冊帳號
-      </li>
-    </ul>
+      </span>
+    </form>
   );
 };
 
