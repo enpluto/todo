@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 type LoginProps = {
   setPage: React.Dispatch<React.SetStateAction<string>>;
@@ -19,6 +20,7 @@ const Login = ({ setPage, email, setToken }: LoginProps) => {
       password: "",
     },
   });
+  const navigate = useNavigate();
 
   const onsubmit = async (data) => {
     const baseUrl = "https://todolist-api.hexschool.io";
@@ -61,6 +63,7 @@ const Login = ({ setPage, email, setToken }: LoginProps) => {
 
       const userData = await response.json();
       setToken(userData.token);
+      navigate("/dashboard");
     } catch (error) {
       console.log("錯誤:", error);
     }
