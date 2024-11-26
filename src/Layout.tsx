@@ -5,11 +5,11 @@ import { useAuth } from "./contexts/AuthContext";
 
 function Layout() {
   const [page, setPage] = useState("login");
-  const { email, setEmail } = useAuth();
+  const { email, setEmail, setToken } = useAuth();
 
   const SwitchPage = () => {
     return page === "login" ? (
-      <Login setPage={setPage} email={email} />
+      <Login setPage={setPage} email={email} setToken={setToken} />
     ) : (
       <SignUp setPage={setPage} setEmail={setEmail} />
     );
