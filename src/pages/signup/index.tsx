@@ -36,6 +36,7 @@ const SignUp = ({ setPage }: Props) => {
 
       const result = await response.json();
       const uid = result.uid;
+      setPage("login");
     } catch (error) {
       console.log("錯誤:", error);
     }
