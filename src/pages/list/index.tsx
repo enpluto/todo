@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 const List = () => {
-  const NavBar = () => {
-    const navigate = useNavigate();
-    const { token, nickname } = useAuth();
+  const baseUrl = "https://todolist-api.hexschool.io";
+  const navigate = useNavigate();
+  const { token, nickname } = useAuth();
 
+  const NavBar = () => {
     const handleLogout = async () => {
       const baseUrl = "https://todolist-api.hexschool.io";
 
@@ -55,6 +56,32 @@ const List = () => {
     const [activeTab, setActiveTab] = useState("全部");
 
     const TextInput = () => {
+      const [text, setText] = useState("");
+      const handleTypeIn = (e) => setText(e.target.value);
+
+      const handleCreateTodo = async () => {
+        if (!text) return;
+
+        try {
+          const response = await fetch(`${baseUrl}/todos`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+            body: JSON.stringify({
+              content: text,
+            }),
+          });
+
+          setText("");
+          const result = await response.json();
+          console.log(result);
+        } catch (error) {
+          console.log("錯誤:", error);
+        }
+      };
+
       return (
         <div className="flex flex-col gap-y-4">
           <div className="flex justify-between w-full bg-white rounded-custom shadow-custom">
@@ -62,11 +89,14 @@ const List = () => {
               className="px-4 py-3 w-full rounded-custom"
               placeholder="新增待辦事項"
               type="text"
+              value={text}
+              onChange={handleTypeIn}
             />
             <img
               src="src/assets/plus.svg"
               alt=""
               className="cursor-pointer p-1"
+              onClick={handleCreateTodo}
             />
           </div>
         </div>
