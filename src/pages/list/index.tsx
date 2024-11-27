@@ -5,7 +5,7 @@ import { useAuth } from "../../contexts/AuthContext";
 const List = () => {
   const NavBar = () => {
     const navigate = useNavigate();
-    const { token } = useAuth();
+    const { token, nickname } = useAuth();
 
     const handleLogout = async () => {
       const baseUrl = "https://todolist-api.hexschool.io";
@@ -42,7 +42,7 @@ const List = () => {
           </span>
         </div>
         <ol className="flex gap-x-6">
-          <li className="hidden md:block font-bold">的代辦</li>
+          <li className="hidden md:block font-bold">{nickname}的待辦</li>
           <li className="cursor-pointer" onClick={handleLogout}>
             登出
           </li>
