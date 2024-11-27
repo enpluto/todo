@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 type LoginProps = {
   setPage: React.Dispatch<React.SetStateAction<string>>;
@@ -20,6 +21,7 @@ const Login = ({ setPage, email, setToken }: LoginProps) => {
       password: "",
     },
   });
+  const { setNickname } = useAuth();
   const navigate = useNavigate();
 
   const onsubmit = async (data) => {
@@ -63,6 +65,7 @@ const Login = ({ setPage, email, setToken }: LoginProps) => {
 
       const userData = await response.json();
       setToken(userData.token);
+      setNickname(userData.nickname);
       navigate("/dashboard");
     } catch (error) {
       console.log("錯誤:", error);
