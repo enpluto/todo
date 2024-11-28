@@ -177,43 +177,53 @@ const List = () => {
         return acc + (todo.status === false ? 1 : 0);
       }, 0);
 
+      const filteredTodos = todos.filter((todo) => {
+        if (activeTab === "待完成") return todo.status === false;
+        if (activeTab === "已完成") return todo.status === true;
+        return true;
+      });
+
       return (
         <div className="p-4">
           <ul className="flex flex-col gap-y-4">
-            {todos.map((todo) => (
-              <li
-                className="flex justify-between gap-x-4 border-b md:border-none border-lightGray"
-                key={todo.id}
-              >
-                <div className="flex gap-x-4 items-center w-full pb-4 md:border-b border-lightGray">
-                  {todo.status ? (
-                    <img
-                      src="src/assets/check_yellow.svg"
-                      alt=""
-                      onClick={() => handleChangeStatus(todo.id)}
-                    />
-                  ) : (
-                    <input
-                      className="w-5 h-5"
-                      type="checkbox"
-                      checked={todo.status}
-                      onChange={() => handleChangeStatus(todo.id)}
-                    />
-                  )}
+            {filteredTodos.map((todo) => {
+              return (
+                <li
+                  className="flex justify-between gap-x-4 border-b md:border-none border-lightGray"
+                  key={todo.id}
+                >
+                  <div className="flex gap-x-4 items-center w-full pb-4 md:border-b border-lightGray">
+                    {todo.status ? (
+                      <img
+                        src="src/assets/check_yellow.svg"
+                        alt=""
+                        onClick={() => handleChangeStatus(todo.id)}
+                      />
+                    ) : (
+                      <input
+                        className="w-5 h-5"
+                        type="checkbox"
+                        checked={todo.status}
+                        onChange={() => handleChangeStatus(todo.id)}
+                      />
+                    )}
 
-                  <span
-                    className={todo.status ? "text-darkGray line-through" : ""}
-                  >
-                    {todo.content}
-                  </span>
-                </div>
-                <img
-                  src="src/assets/close.svg"
-                  alt=""
-                  className="pb-4 cursor-pointer"
-                />
-              </li>
-            ))}
+                    <span
+                      className={
+                        todo.status ? "text-darkGray line-through" : ""
+                      }
+                    >
+                      {todo.content}
+                    </span>
+                  </div>
+                  <img
+                    src="src/assets/close.svg"
+                    alt=""
+                    className="pb-4 cursor-pointer"
+                  />
+                </li>
+              );
+            })}
             <ol className="flex justify-between py-2">
               <li>{sumUndone} 個待完成項目</li>
               <li className="text-darkGray md:pr-8 cursor-pointer">
