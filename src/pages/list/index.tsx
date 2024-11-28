@@ -100,6 +100,7 @@ const List = () => {
           setText("");
           const result = await response.json();
           console.log(result);
+          getTodos();
         } catch (error) {
           console.log("錯誤:", error);
         }
