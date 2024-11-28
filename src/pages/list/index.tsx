@@ -9,8 +9,12 @@ const List = () => {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    getTodos();
-  }, []);
+    if (token) {
+      getTodos();
+    } else {
+      navigate("/");
+    }
+  }, [token]);
 
   const getTodos = async () => {
     try {
