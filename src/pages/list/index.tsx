@@ -9,8 +9,12 @@ const List = () => {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    getTodos();
-  }, []);
+    if (token) {
+      getTodos();
+    } else {
+      navigate("/");
+    }
+  }, [token]);
 
   const getTodos = async () => {
     try {
@@ -24,7 +28,6 @@ const List = () => {
 
       const result = await response.json();
       setTodos(result.data);
-      console.log(todos);
     } catch (error) {
       console.log(error);
     }
@@ -149,6 +152,27 @@ const List = () => {
     };
 
     const Content = () => {
+      const handleChangeStatus = async (id) => {
+        try {
+          const response = await fetch(`${baseUrl}/todos/${id}/toggle`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+            body: JSON.stringify({
+              id: id,
+            }),
+          });
+
+          const result = await response.json();
+          console.log(result);
+          getTodos();
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
       const sumUndone = todos.reduce((acc, todo) => {
         return acc + (todo.status === false ? 1 : 0);
       }, 0);
@@ -163,9 +187,18 @@ const List = () => {
               >
                 <div className="flex gap-x-4 items-center w-full pb-4 md:border-b border-lightGray">
                   {todo.status ? (
-                    <img src="src/assets/check_yellow.svg" alt="" />
+                    <img
+                      src="src/assets/check_yellow.svg"
+                      alt=""
+                      onClick={() => handleChangeStatus(todo.id)}
+                    />
                   ) : (
-                    <input className="w-5 h-5" type="checkbox" />
+                    <input
+                      className="w-5 h-5"
+                      type="checkbox"
+                      checked={todo.status}
+                      onChange={() => handleChangeStatus(todo.id)}
+                    />
                   )}
 
                   <span
