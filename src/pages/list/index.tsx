@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -6,6 +6,29 @@ const List = () => {
   const baseUrl = "https://todolist-api.hexschool.io";
   const navigate = useNavigate();
   const { token, nickname } = useAuth();
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    getTodos();
+  }, []);
+
+  const getTodos = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/todos`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      });
+
+      const result = await response.json();
+      setTodos(result.data);
+      console.log(todos);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const NavBar = () => {
     const handleLogout = async () => {
@@ -77,6 +100,7 @@ const List = () => {
           setText("");
           const result = await response.json();
           console.log(result);
+          getTodos();
         } catch (error) {
           console.log("錯誤:", error);
         }
@@ -125,34 +149,40 @@ const List = () => {
     };
 
     const Content = () => {
+      const sumUndone = todos.reduce((acc, todo) => {
+        return acc + (todo.status === false ? 1 : 0);
+      }, 0);
+
       return (
         <div className="p-4">
           <ul className="flex flex-col gap-y-4">
-            {" "}
-            <li className="flex justify-between gap-x-4 border-b md:border-none border-lightGray">
-              <div className="flex gap-x-4 items-center w-full pb-4 md:border-b border-lightGray">
-                <input className="w-5 h-5" type="checkbox" />
-                <span>1</span>
-              </div>
-              <img
-                src="src/assets/close.svg"
-                alt=""
-                className="pb-4 cursor-pointer"
-              />
-            </li>
-            <li className="flex justify-between gap-x-4 border-b md:border-none border-lightGray">
-              <div className="flex gap-x-4 items-center w-full pb-4 md:border-b border-lightGray">
-                <img src="src/assets/check_yellow.svg" alt="" />
-                <span className="text-darkGray line-through">2</span>
-              </div>
-              <img
-                src="src/assets/close.svg"
-                alt=""
-                className="pb-4 cursor-pointer"
-              />
-            </li>
+            {todos.map((todo) => (
+              <li
+                className="flex justify-between gap-x-4 border-b md:border-none border-lightGray"
+                key={todo.id}
+              >
+                <div className="flex gap-x-4 items-center w-full pb-4 md:border-b border-lightGray">
+                  {todo.status ? (
+                    <img src="src/assets/check_yellow.svg" alt="" />
+                  ) : (
+                    <input className="w-5 h-5" type="checkbox" />
+                  )}
+
+                  <span
+                    className={todo.status ? "text-darkGray line-through" : ""}
+                  >
+                    {todo.content}
+                  </span>
+                </div>
+                <img
+                  src="src/assets/close.svg"
+                  alt=""
+                  className="pb-4 cursor-pointer"
+                />
+              </li>
+            ))}
             <ol className="flex justify-between py-2">
-              <li>個待完成項目</li>
+              <li>{sumUndone} 個待完成項目</li>
               <li className="text-darkGray md:pr-8 cursor-pointer">
                 清除已完成項目
               </li>
@@ -174,11 +204,14 @@ const List = () => {
     return (
       <div className="flex flex-col gap-y-4 max-w-[311px] md:max-w-[500px] w-full mx-auto">
         <TextInput />
-        <div className="bg-white rounded-custom shadow-custom">
-          <Toggle />
-          <Content />
-        </div>
-        {/* <EmptyList /> */}
+        {todos.length > 0 ? (
+          <div className="bg-white rounded-custom shadow-custom">
+            <Toggle />
+            <Content />
+          </div>
+        ) : (
+          <EmptyList />
+        )}
       </div>
     );
   };
