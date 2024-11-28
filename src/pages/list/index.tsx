@@ -204,11 +204,14 @@ const List = () => {
     return (
       <div className="flex flex-col gap-y-4 max-w-[311px] md:max-w-[500px] w-full mx-auto">
         <TextInput />
-        <div className="bg-white rounded-custom shadow-custom">
-          <Toggle />
-          <Content />
-        </div>
-        {/* <EmptyList /> */}
+        {todos.length > 0 ? (
+          <div className="bg-white rounded-custom shadow-custom">
+            <Toggle />
+            <Content />
+          </div>
+        ) : (
+          <EmptyList />
+        )}
       </div>
     );
   };
