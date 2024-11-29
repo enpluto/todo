@@ -7,6 +7,7 @@ const List = () => {
   const navigate = useNavigate();
   const { token, nickname } = useAuth();
   const [todos, setTodos] = useState([]);
+  const [editMode, setEditMode] = useState("");
 
   useEffect(() => {
     if (token) {
@@ -152,6 +153,28 @@ const List = () => {
     };
 
     const Content = () => {
+      const [editedTodo, setEditedTodo] = useState("");
+
+      const handleEditTodo = async (id, content) => {
+        try {
+          const response = await fetch(`${baseUrl}/todos/${id}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+            body: JSON.stringify({
+              content: content,
+            }),
+          });
+          const result = await response.json();
+          console.log(result);
+          getTodos();
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
       const handleDeleteAllDone = async () => {
         const doneTodos = todos.filter((todo) => todo.status === true);
         if (!doneTodos.length) return;
@@ -234,7 +257,7 @@ const List = () => {
             {filteredTodos.map((todo) => {
               return (
                 <li
-                  className="flex justify-between gap-x-4 border-b md:border-none border-lightGray"
+                  className="flex justify-between gap-x-2 border-b md:border-none border-lightGray"
                   key={todo.id}
                 >
                   <div className="flex gap-x-4 items-center w-full pb-4 md:border-b border-lightGray">
@@ -249,17 +272,52 @@ const List = () => {
                         className="w-5 h-5"
                         type="checkbox"
                         checked={todo.status}
-                        onChange={() => handleChangeStatus(todo.id)}
+                        onChange={(e) => handleChangeStatus(todo.id)}
                       />
                     )}
-
-                    <span
-                      className={
-                        todo.status ? "text-darkGray line-through" : ""
-                      }
-                    >
-                      {todo.content}
-                    </span>
+                    {editMode === todo.id && todo.status === false ? (
+                      <div className="flex justify-between gap-x-3 items-center w-full">
+                        <input
+                          type="text"
+                          defaultValue={todo.content}
+                          className="border border-darkGray rounded-md p-1 w-full"
+                          onChange={(e) => setEditedTodo(e.target.value)}
+                        />
+                        <span
+                          className="text-darkGray cursor-pointer whitespace-nowrap"
+                          onClick={() => {
+                            if (
+                              editedTodo !== "" &&
+                              editedTodo !== todo.content
+                            ) {
+                              handleEditTodo(todo.id, editedTodo);
+                            }
+                            setEditMode("");
+                          }}
+                        >
+                          完成
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="flex justify-between items-center w-full">
+                        <span
+                          className={
+                            todo.status ? "text-darkGray line-through" : ""
+                          }
+                        >
+                          {todo.content}
+                        </span>
+                        <span
+                          className={`text-darkGray cursor-pointer whitespace-nowrap ${todo.status ? "hidden" : "block"}`}
+                          onClick={() => {
+                            setEditMode(todo.id);
+                            setEditedTodo(todo.content);
+                          }}
+                        >
+                          編輯
+                        </span>
+                      </div>
+                    )}
                   </div>
                   <img
                     src="src/assets/close.svg"
