@@ -152,6 +152,27 @@ const List = () => {
     };
 
     const Content = () => {
+      const handleDeleteTodo = async (id) => {
+        try {
+          const response = await fetch(`${baseUrl}/todos/${id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+            body: JSON.stringify({
+              id: id,
+            }),
+          });
+
+          const result = await response.json();
+          console.log(result);
+          getTodos();
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
       const handleChangeStatus = async (id) => {
         try {
           const response = await fetch(`${baseUrl}/todos/${id}/toggle`, {
@@ -220,6 +241,7 @@ const List = () => {
                     src="src/assets/close.svg"
                     alt=""
                     className="pb-4 cursor-pointer"
+                    onClick={() => handleDeleteTodo(todo.id)}
                   />
                 </li>
               );
