@@ -152,6 +152,30 @@ const List = () => {
     };
 
     const Content = () => {
+      const handleDeleteAllDone = async () => {
+        const doneTodos = todos.filter((todo) => todo.status === true);
+        if (!doneTodos.length) return;
+
+        try {
+          const response = doneTodos.map((todo) =>
+            fetch(`${baseUrl}/todos/${todo.id}`, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+              },
+            })
+          );
+
+          // 等待所有請求完成
+          const result = await Promise.all(response);
+          console.log("All completed todos deleted:", result);
+          getTodos();
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
       const handleDeleteTodo = async (id) => {
         try {
           const response = await fetch(`${baseUrl}/todos/${id}`, {
@@ -248,7 +272,10 @@ const List = () => {
             })}
             <ol className="flex justify-between py-2">
               <li>{sumUndone} 個待完成項目</li>
-              <li className="text-darkGray md:pr-8 cursor-pointer">
+              <li
+                className="text-darkGray md:pr-8 cursor-pointer"
+                onClick={handleDeleteAllDone}
+              >
                 清除已完成項目
               </li>
             </ol>
