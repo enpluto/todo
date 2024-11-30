@@ -10,7 +10,6 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    defaultValues,
     formState: { errors },
     setError,
   } = useForm({
