@@ -1,28 +1,42 @@
 import { createContext, ReactNode, useState, useContext } from "react";
 
 interface AuthContextType {
-  token: string | null;
-  email: string | null;
-  nickname: string | null;
-  setToken: React.Dispatch<React.SetStateAction<string | null>>;
-  setEmail: React.Dispatch<React.SetStateAction<string | null>>;
-  setNickname: React.Dispatch<React.SetStateAction<string | null>>;
+  email: string | undefined;
+  page: string;
+  token: string | undefined;
+  username: string | undefined;
+  setEmail: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setPage: React.Dispatch<React.SetStateAction<string>>;
+  setToken: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setUsername: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
-export const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined
+);
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [token, setToken] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
-  const [nickname, setNickname] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | undefined>(undefined);
+  const [page, setPage] = useState<string>("login");
+  const [token, setToken] = useState<string | undefined>(undefined);
+  const [username, setUsername] = useState<string | undefined>(undefined);
 
   return (
     <AuthContext.Provider
-      value={{ token, email, nickname, setEmail, setToken, setNickname }}
+      value={{
+        email,
+        page,
+        token,
+        username,
+        setEmail,
+        setPage,
+        setToken,
+        setUsername,
+      }}
     >
       {children}
     </AuthContext.Provider>
@@ -32,8 +46,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
 
-  if (!context) return;
-
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
   return context;
 };
 

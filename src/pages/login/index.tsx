@@ -3,13 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { inputDataset } from "./data";
 
-type LoginProps = {
-  setPage: React.Dispatch<React.SetStateAction<string>>;
-  email: string | null;
-  setToken: React.Dispatch<React.SetStateAction<string>>;
-};
+const Login = () => {
+  const { email, setPage, setToken, setUsername } = useAuth();
+  const navigate = useNavigate();
 
-const Login = ({ setPage, email, setToken }: LoginProps) => {
   const {
     register,
     handleSubmit,
@@ -22,8 +19,6 @@ const Login = ({ setPage, email, setToken }: LoginProps) => {
       password: "",
     },
   });
-  const { setNickname } = useAuth();
-  const navigate = useNavigate();
 
   const onsubmit = async (data) => {
     const baseUrl = "https://todolist-api.hexschool.io";
@@ -66,7 +61,7 @@ const Login = ({ setPage, email, setToken }: LoginProps) => {
 
       const userData = await response.json();
       setToken(userData.token);
-      setNickname(userData.nickname);
+      setUsername(userData.nickname);
       navigate("/dashboard");
     } catch (error) {
       console.log("錯誤:", error);

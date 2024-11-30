@@ -1,7 +1,7 @@
 import { RegisterOptions } from "react-hook-form";
 
 type InputNameType = {
-  email: string | null;
+  email: string | undefined;
   password: string;
 };
 
