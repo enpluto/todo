@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { inputDataset } from "./data";
+import { inputDataset } from "./data.ts";
 
 const Login = () => {
   const { email, setPage, setToken, setUsername } = useAuth();
