@@ -1,4 +1,4 @@
-import Login from "./pages/login";
+import Login from "./components/Login";
 import SignUp from "./pages/signup";
 import { useAuth } from "./contexts/AuthContext";
 
