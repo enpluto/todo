@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { inputDataset } from "./data";
 
 type LoginProps = {
   setPage: React.Dispatch<React.SetStateAction<string>>;
@@ -72,6 +73,30 @@ const Login = ({ setPage, email, setToken }: LoginProps) => {
     }
   };
 
+  const initInputs = inputDataset.map((input) => {
+    const { htmlFor, labelName, placeholder, id, type, validation } = input;
+
+    return (
+      <div className="flex flex-col gap-y-1" key={id}>
+        <label className="text-sm font-bold" htmlFor={htmlFor}>
+          {labelName}
+        </label>
+        <input
+          className="rounded-custom px-4 py-3"
+          placeholder={placeholder}
+          id={id}
+          type={type}
+          {...register(id, validation)}
+        />
+        {errors[id as keyof typeof errors] && (
+          <span className="text-error font-bold text-sm">
+            {errors[id as keyof typeof errors]?.message}
+          </span>
+        )}
+      </div>
+    );
+  });
+
   return (
     <form
       className="flex flex-col gap-y-6 mx-auto"
@@ -80,51 +105,7 @@ const Login = ({ setPage, email, setToken }: LoginProps) => {
       <span className="text-xl md:text-2xl text-center md:text-left font-bold pt-4 md:pt-0">
         最實用的線上待辦事項服務
       </span>
-      <ol className="flex flex-col gap-y-4">
-        <div className="flex flex-col gap-y-1">
-          <label className="text-sm font-bold" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="rounded-custom px-4 py-3"
-            placeholder="請輸入Email"
-            id="email"
-            type="email"
-            {...register("email", {
-              required: "此欄位不可為空",
-              pattern: {
-                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/,
-                message: "Email格式錯誤",
-              },
-            })}
-          />
-          {errors.email && (
-            <span className="text-error font-bold text-sm">
-              {errors.email?.message}
-            </span>
-          )}
-        </div>
-        <div className="flex flex-col gap-y-1">
-          <label className="text-sm font-bold" htmlFor="password">
-            密碼
-          </label>
-          <input
-            className="rounded-custom px-4 py-3"
-            placeholder="請輸入密碼"
-            id="password"
-            type="password"
-            {...register("password", {
-              required: "此欄位不可為空",
-              minLength: { value: 6, message: "長度不足6個字" },
-            })}
-          />
-          {errors.password && (
-            <span className="text-error font-bold text-sm">
-              {errors.password.message}
-            </span>
-          )}
-        </div>
-      </ol>
+      <div className="flex flex-col gap-y-4">{initInputs}</div>
       <button
         className="bg-black text-white rounded-custom px-12 py-3 font-bold max-w-[128px] m-auto"
         type="submit"
