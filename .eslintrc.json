@@ -1,41 +1,49 @@
 {
-  "env": {
-    "browser": true,
-    "es2021": true,
-    "node": true
-  },
+  "parser": "@typescript-eslint/parser",
   "extends": [
-    "eslint:recommended",           // 基本的 ESLint 規範
-    "plugin:react/recommended",     // React 的最佳實踐
-    "plugin:react-hooks/recommended", // React hooks 規範
-    "plugin:jsx-a11y/recommended",  // 可及性最佳實踐
-    "plugin:import/errors",         // import 相關規範
-    "plugin:import/warnings",
-    "prettier"
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
   ],
-  "parserOptions": {
-    "ecmaVersion": 12,  // 使用 ECMAScript 2021 (ES12)
-    "sourceType": "module"
-  },
-  "plugins": [
-    "react",              // React 的 plugin
-    "react-hooks",        // React hooks plugin
-    "jsx-a11y",           // 可及性插件
-    "import",              // import plugin
-    "prettier"
-  ],
+  "plugins": ["@typescript-eslint", "prettier", "import"],
   "rules": {
-    "react/prop-types": "off",      // 如果不需要 prop-types，可以關閉
-    "react/react-in-jsx-scope": "off", // React 17 之後不需要再 import React
-    "import/no-unresolved": "error", // import 模組無法解析時報錯
-    "jsx-a11y/anchor-is-valid": "warn", // <a> 標籤的可及性檢查
-    "react-hooks/rules-of-hooks": "error", // React hooks 規範
-    "react-hooks/exhaustive-deps": "warn",  // hook 的依賴檢查
-    "prettier/prettier": "warn"
-  },
-  "settings": {
-    "react": {
-      "version": "detect"  // 自動檢測 React 版本
-    }
+    "no-console": "warn",
+    "prettier/prettier": "error",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-uses-react": "off",
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "external",
+          "builtin",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+          "object",
+          "type"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "next",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "^@/components",
+            "group": "internal",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "orderImportKind": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
   }
 }
