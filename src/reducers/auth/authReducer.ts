@@ -1,20 +1,26 @@
 export const initialState = {
   token: null,
+  username: undefined,
+  email: undefined,
 };
 
 interface AuthState {
   token: string | null;
   username?: string;
+  email?: string;
 }
 
 export type AuthAction =
-  | { type: "LOGIN_REQUEST" }
+  | { type: "SIGNUP_SUCCESS"; payload: { email: string } }
   | { type: "LOGIN_SUCCESS"; payload: { token: string; username: string } };
 
 export const authReducer = (state: AuthState, action: AuthAction) => {
   switch (action.type) {
-    case "LOGIN_REQUEST":
-      return { ...state };
+    case "SIGNUP_SUCCESS":
+      return {
+        ...state,
+        email: action.payload.email,
+      };
     case "LOGIN_SUCCESS":
       return {
         ...state,

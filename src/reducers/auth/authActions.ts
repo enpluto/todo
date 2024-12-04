@@ -1,14 +1,61 @@
 import { Dispatch } from "react";
 import { UseFormSetError } from "react-hook-form";
 import { LoginDataType } from "../../components/Login";
+import { SignUpDataType } from "../../components/SignUp";
 import { AuthAction } from "./authReducer";
 
 const baseUrl = "https://todolist-api.hexschool.io";
+const headers = {
+  "Content-Type": "application/json",
+  Accept: "application/json",
+};
+
+type UserSignUpParams = {
+  dispatch: Dispatch<AuthAction>;
+  data: SignUpDataType;
+  setError: UseFormSetError<SignUpDataType>;
+};
 
 type UserLoginParams = {
   dispatch: Dispatch<AuthAction>;
   data: LoginDataType;
   setError: UseFormSetError<LoginDataType>;
+};
+
+export const userSignUp = async ({
+  dispatch,
+  data,
+  setError,
+}: UserSignUpParams) => {
+  try {
+    const response = await fetch(`${baseUrl}/users/sign_up`, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({
+        email: data.email,
+        password: data.password,
+        nickname: data.username,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      if (response.status === 400) {
+        setError("email", {
+          type: "manual",
+          message: errorData.message,
+        });
+      }
+    } else {
+      const userData = await response.json();
+      dispatch({
+        type: "SIGNUP_SUCCESS",
+        payload: { email: userData.email },
+      });
+    }
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const userLogin = async ({
@@ -19,9 +66,7 @@ export const userLogin = async ({
   try {
     const response = await fetch(`${baseUrl}/users/sign_in`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: headers,
       body: JSON.stringify({
         email: data.email,
         password: data.password,
