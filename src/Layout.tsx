@@ -1,16 +1,12 @@
 import Login from "./components/Login";
-import SignUp from "./pages/signup";
+import SignUp from "./components/SignUp";
 import { useAuth } from "./contexts/AuthContext";
 
 function Layout() {
-  const { page, setEmail, setPage } = useAuth();
+  const { page } = useAuth();
 
   const SwitchPage = () => {
-    return page === "login" ? (
-      <Login />
-    ) : (
-      <SignUp setPage={setPage} setEmail={setEmail} />
-    );
+    return page === "login" ? <Login /> : <SignUp />;
   };
 
   return (
