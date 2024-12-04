@@ -1,12 +1,9 @@
 import { useForm } from "react-hook-form";
+import { useAuth } from "../../contexts/AuthContext";
 import { inputDataset } from "./data";
 
-type SignUpProps = {
-  setPage: React.Dispatch<React.SetStateAction<string>>;
-  setEmail: React.Dispatch<React.SetStateAction<string>>;
-};
-
-const SignUp = ({ setPage, setEmail }: SignUpProps) => {
+const SignUp = () => {
+  const { setPage, setEmail } = useAuth();
   const {
     register,
     handleSubmit,
