@@ -1,5 +1,5 @@
 import Login from "./components/Login";
-import SignUp from "./pages/signup";
+import SignUp from "./components/SignUp";
 import { useAuth } from "./contexts/AuthContext";
 
 function Layout() {
