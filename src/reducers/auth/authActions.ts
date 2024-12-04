@@ -5,6 +5,10 @@ import { SignUpDataType } from "../../components/SignUp";
 import { AuthAction } from "./authReducer";
 
 const baseUrl = "https://todolist-api.hexschool.io";
+const headers = {
+  "Content-Type": "application/json",
+  Accept: "application/json",
+};
 
 type UserSignUpParams = {
   dispatch: Dispatch<AuthAction>;
@@ -26,10 +30,7 @@ export const userSignUp = async ({
   try {
     const response = await fetch(`${baseUrl}/users/sign_up`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
+      headers: headers,
       body: JSON.stringify({
         email: data.email,
         password: data.password,
@@ -65,9 +66,7 @@ export const userLogin = async ({
   try {
     const response = await fetch(`${baseUrl}/users/sign_in`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: headers,
       body: JSON.stringify({
         email: data.email,
         password: data.password,
