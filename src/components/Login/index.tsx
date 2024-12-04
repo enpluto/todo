@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
@@ -28,12 +28,15 @@ const Login = () => {
     },
   });
 
-  const handleLogin = async (data: LoginDataType) => {
-    await userLogin({ dispatch, data, setError });
+  useEffect(() => {
     if (state.token) {
       setUsername(state.username);
       navigate("/dashboard");
     }
+  }, [state.token]);
+
+  const handleLogin = async (data: LoginDataType) => {
+    await userLogin({ dispatch, data, setError });
   };
 
   const initInputs = inputDataset.map((input) => {
