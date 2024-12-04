@@ -1,10 +1,19 @@
+import { useEffect, useReducer } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { userLogin } from "../../reducers/auth/authActions.ts";
+import { authReducer, initialState } from "../../reducers/auth/authReducer.ts";
 import { inputDataset } from "./data.ts";
 
+export interface LoginDataType {
+  email: string | undefined;
+  password: string;
+}
+
 const Login = () => {
-  const { email, setPage, setToken, setUsername } = useAuth();
+  const [state, dispatch] = useReducer(authReducer, initialState);
+  const { email, setPage, setUsername } = useAuth();
   const navigate = useNavigate();
 
   const {
@@ -19,52 +28,15 @@ const Login = () => {
     },
   });
 
-  const onsubmit = async (data) => {
-    const baseUrl = "https://todolist-api.hexschool.io";
-
-    try {
-      const response = await fetch(`${baseUrl}/users/sign_in`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-
-        switch (response.status) {
-          case 401:
-            setError("email", {
-              type: "manual",
-              message: errorData.message,
-            });
-            setError("password", {
-              type: "manual",
-              message: errorData.message,
-            });
-            break;
-          case 404:
-            setError("email", {
-              type: "manual",
-              message: "用戶不存在",
-            });
-            break;
-        }
-      }
-
-      const userData = await response.json();
-      setToken(userData.token);
-      setUsername(userData.nickname);
+  useEffect(() => {
+    if (state.token) {
+      setUsername(state.username);
       navigate("/dashboard");
-    } catch (error) {
-      console.log("錯誤:", error);
     }
+  }, [state.token]);
+
+  const handleLogin = async (data: LoginDataType) => {
+    await userLogin({ dispatch, data, setError });
   };
 
   const initInputs = inputDataset.map((input) => {
@@ -94,7 +66,7 @@ const Login = () => {
   return (
     <form
       className="flex flex-col gap-y-6 mx-auto"
-      onSubmit={handleSubmit(onsubmit)}
+      onSubmit={handleSubmit(handleLogin)}
     >
       <span className="text-xl md:text-2xl text-center md:text-left font-bold pt-4 md:pt-0">
         最實用的線上待辦事項服務
