@@ -1,13 +1,25 @@
+import { useReducer } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../contexts/AuthContext";
+import { userSignUp } from "../../reducers/auth/authActions";
+import { authReducer, initialState } from "../../reducers/auth/authReducer";
 import { inputDataset } from "./data";
 
+export interface SignUpDataType {
+  email: string;
+  username: string;
+  password: string;
+}
+
 const SignUp = () => {
-  const { setPage, setEmail } = useAuth();
+  const { setPage } = useAuth();
+  const [state, dispatch] = useReducer(authReducer, initialState);
+
   const {
     register,
     handleSubmit,
     getValues,
+    setError,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -17,33 +29,10 @@ const SignUp = () => {
       confirmPassword: "",
     },
   });
-  const onSubmit = async (data) => {
-    const baseUrl = "https://todolist-api.hexschool.io";
 
-    try {
-      const response = await fetch(`${baseUrl}/users/sign_up`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-          nickname: data.nickname,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message);
-      }
-
-      setEmail(data.email);
-      setPage("login");
-    } catch (error) {
-      console.log("錯誤:", error);
-    }
+  const handleSignUP = async (data: SignUpDataType) => {
+    await userSignUp({ dispatch, data, setError });
+    setPage("login");
   };
 
   const initInputs = inputDataset.map((input) => {
@@ -73,7 +62,7 @@ const SignUp = () => {
   return (
     <form
       className="flex flex-col gap-y-6 mx-auto"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(handleSignUP)}
     >
       <span className="text-xl md:text-2xl text-center md:text-left font-bold pt-4 md:pt-0">
         註冊帳號
