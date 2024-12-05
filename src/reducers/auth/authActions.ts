@@ -11,7 +11,6 @@ const headers = {
 };
 
 type UserSignUpParams = {
-  dispatch: Dispatch<AuthAction>;
   data: SignUpDataType;
   setError: UseFormSetError<SignUpDataType>;
 };
@@ -22,11 +21,7 @@ type UserLoginParams = {
   setError: UseFormSetError<LoginDataType>;
 };
 
-export const userSignUp = async ({
-  dispatch,
-  data,
-  setError,
-}: UserSignUpParams) => {
+export const userSignUp = async ({ data, setError }: UserSignUpParams) => {
   try {
     const response = await fetch(`${baseUrl}/users/sign_up`, {
       method: "POST",
@@ -46,15 +41,12 @@ export const userSignUp = async ({
           message: errorData.message,
         });
       }
-    } else {
-      const userData = await response.json();
-      dispatch({
-        type: "SIGNUP_SUCCESS",
-        payload: { email: userData.email },
-      });
+      return false;
     }
+    const result = await response.json();
+    if (result.status) return true;
   } catch (error) {
-    throw error;
+    return false;
   }
 };
 
