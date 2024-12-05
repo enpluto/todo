@@ -1,8 +1,6 @@
-import { useReducer } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../contexts/AuthContext";
 import { userSignUp } from "../../reducers/auth/authActions";
-import { authReducer, initialState } from "../../reducers/auth/authReducer";
 import { inputDataset } from "./data";
 
 export interface SignUpDataType {
@@ -12,8 +10,7 @@ export interface SignUpDataType {
 }
 
 const SignUp = () => {
-  const { setPage } = useAuth();
-  const [state, dispatch] = useReducer(authReducer, initialState);
+  const { setEmail, setPage } = useAuth();
 
   const {
     register,
@@ -31,8 +28,12 @@ const SignUp = () => {
   });
 
   const handleSignUP = async (data: SignUpDataType) => {
-    await userSignUp({ dispatch, data, setError });
-    setPage("login");
+    const isSuccess = await userSignUp({ data, setError });
+
+    if (isSuccess) {
+      setEmail(data.email);
+      setPage("login");
+    }
   };
 
   const initInputs = inputDataset.map((input) => {
