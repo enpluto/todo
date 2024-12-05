@@ -10,7 +10,7 @@ export interface SignUpDataType {
 }
 
 const SignUp = () => {
-  const { setPage } = useAuth();
+  const { setEmail, setPage } = useAuth();
 
   const {
     register,
@@ -28,8 +28,12 @@ const SignUp = () => {
   });
 
   const handleSignUP = async (data: SignUpDataType) => {
-    await userSignUp({ data, setError });
-    setPage("login");
+    const isSuccess = await userSignUp({ data, setError });
+
+    if (isSuccess) {
+      setEmail(data.email);
+      setPage("login");
+    }
   };
 
   const initInputs = inputDataset.map((input) => {
