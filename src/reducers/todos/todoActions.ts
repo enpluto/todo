@@ -19,3 +19,20 @@ export const fetchTodos = async (token: string) => {
     throw error;
   }
 };
+
+export const createTodo = async (token: string, text: string) => {
+  try {
+    await fetch(`${baseUrl}/todos`, {
+      method: "POST",
+      headers: {
+        ...headers,
+        Authorization: token,
+      },
+      body: JSON.stringify({
+        content: text,
+      }),
+    });
+  } catch (error) {
+    throw error;
+  }
+};
