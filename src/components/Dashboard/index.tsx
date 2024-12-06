@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { fetchTodos } from "../../reducers/todos/todoActions";
+import { createTodo, fetchTodos } from "../../reducers/todos/todoActions";
 import NavBar from "./NavBar";
 
 const Dashboard = () => {
@@ -32,28 +32,11 @@ const Dashboard = () => {
       const [text, setText] = useState("");
       const handleTypeIn = (e) => setText(e.target.value);
 
-      const handleCreateTodo = async () => {
+      const handleCreateTodo = async (token: string, text: string) => {
         if (!text) return;
-
-        try {
-          const response = await fetch(`${baseUrl}/todos`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-            body: JSON.stringify({
-              content: text,
-            }),
-          });
-
-          setText("");
-          const result = await response.json();
-          console.log(result);
-          handleFetchTodos(token);
-        } catch (error) {
-          console.log("錯誤:", error);
-        }
+        await createTodo(token, text);
+        setText("");
+        handleFetchTodos(token);
       };
 
       return (
@@ -70,7 +53,7 @@ const Dashboard = () => {
               src="src/assets/plus.svg"
               alt=""
               className="cursor-pointer p-1"
-              onClick={handleCreateTodo}
+              onClick={() => token && handleCreateTodo(token, text)}
             />
           </div>
         </div>
