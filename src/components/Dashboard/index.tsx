@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { fetchTodos } from "../../reducers/todos/todoActions";
+import EmptyList from "./EmptyList";
 import NavBar from "./NavBar";
 import TodoFilter from "./TodoFilter";
 import TodoInput from "./TodoInput";
@@ -215,15 +216,6 @@ const Dashboard = () => {
               </li>
             </ol>
           </ul>
-        </div>
-      );
-    };
-
-    const EmptyList = () => {
-      return (
-        <div className="flex flex-col items-center gap-y-4 mt-11">
-          <span className="">目前尚無待辦事項</span>
-          <img src="src/assets/empty.svg" alt="" />
         </div>
       );
     };
