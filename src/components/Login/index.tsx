@@ -1,9 +1,8 @@
-import { useEffect, useReducer } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { userLogin } from "../../reducers/auth/authActions.ts";
-import { authReducer, initialState } from "../../reducers/auth/authReducer.ts";
 import { inputDataset } from "./data.ts";
 
 export interface LoginDataType {
@@ -12,8 +11,7 @@ export interface LoginDataType {
 }
 
 const Login = () => {
-  const [state, dispatch] = useReducer(authReducer, initialState);
-  const { email, setPage, setUsername } = useAuth();
+  const { email, setPage, state, dispatch } = useAuth();
   const navigate = useNavigate();
 
   const {
@@ -30,7 +28,6 @@ const Login = () => {
 
   useEffect(() => {
     if (state.token) {
-      setUsername(state.username);
       navigate("/dashboard");
     }
   }, [state.token]);
