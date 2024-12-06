@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { fetchTodos, toggleTodo } from "../../reducers/todos/todoActions";
+import {
+  editTodo,
+  fetchTodos,
+  toggleTodo,
+} from "../../reducers/todos/todoActions";
 import EmptyList from "./EmptyList";
 import NavBar from "./NavBar";
 import TodoFilter from "./TodoFilter";
@@ -33,23 +37,10 @@ const Dashboard = () => {
     const Content = () => {
       const [editedTodo, setEditedTodo] = useState("");
 
-      const handleEditTodo = async (id, content) => {
-        try {
-          const response = await fetch(`${baseUrl}/todos/${id}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-            body: JSON.stringify({
-              content: content,
-            }),
-          });
-          const result = await response.json();
-          console.log(result);
+      const handleEditTodo = async (id: string, content: string) => {
+        if (token) {
+          await editTodo(token, id, content);
           handleFetchTodos(token);
-        } catch (error) {
-          console.log(error);
         }
       };
 
