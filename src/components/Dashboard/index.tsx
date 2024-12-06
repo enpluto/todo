@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { fetchTodos } from "../../reducers/todos/todoActions";
+import EmptyList from "./EmptyList";
 import NavBar from "./NavBar";
+import TodoFilter from "./TodoFilter";
 import TodoInput from "./TodoInput";
 
 const Dashboard = () => {
@@ -27,27 +29,6 @@ const Dashboard = () => {
 
   const TodoList = () => {
     const [activeTab, setActiveTab] = useState("全部");
-
-    const Toggle = () => {
-      const tabs = ["全部", "待完成", "已完成"];
-
-      return (
-        <ul className="flex justify-evenly font-bold">
-          {tabs.map((item) => {
-            return (
-              <li
-                className={`text-center w-full py-4 cursor-pointer border-b-2
-                  ${activeTab === item ? "text-black border-black" : "text-darkGray border-lightGray"}`}
-                onClick={() => setActiveTab(item)}
-                key={item}
-              >
-                {item}
-              </li>
-            );
-          })}
-        </ul>
-      );
-    };
 
     const Content = () => {
       const [editedTodo, setEditedTodo] = useState("");
@@ -239,21 +220,12 @@ const Dashboard = () => {
       );
     };
 
-    const EmptyList = () => {
-      return (
-        <div className="flex flex-col items-center gap-y-4 mt-11">
-          <span className="">目前尚無待辦事項</span>
-          <img src="src/assets/empty.svg" alt="" />
-        </div>
-      );
-    };
-
     return (
       <div className="flex flex-col gap-y-4 max-w-[311px] md:max-w-[500px] w-full mx-auto">
         <TodoInput />
         {todos.length > 0 ? (
           <div className="bg-white rounded-custom shadow-custom">
-            <Toggle />
+            <TodoFilter activeTab={activeTab} setActiveTab={setActiveTab} />
             <Content />
           </div>
         ) : (
