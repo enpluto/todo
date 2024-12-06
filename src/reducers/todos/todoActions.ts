@@ -36,3 +36,20 @@ export const createTodo = async (token: string, text: string) => {
     throw error;
   }
 };
+
+export const toggleTodo = async (token: string, id: string) => {
+  try {
+    await fetch(`${baseUrl}/todos/${id}/toggle`, {
+      method: "PATCH",
+      headers: {
+        ...headers,
+        Authorization: token,
+      },
+      body: JSON.stringify({
+        id: id,
+      }),
+    });
+  } catch (error) {
+    throw error;
+  }
+};

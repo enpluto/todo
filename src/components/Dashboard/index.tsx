@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { fetchTodos } from "../../reducers/todos/todoActions";
+import { fetchTodos, toggleTodo } from "../../reducers/todos/todoActions";
 import EmptyList from "./EmptyList";
 import NavBar from "./NavBar";
 import TodoFilter from "./TodoFilter";
@@ -98,25 +98,9 @@ const Dashboard = () => {
         }
       };
 
-      const handleChangeStatus = async (id) => {
-        try {
-          const response = await fetch(`${baseUrl}/todos/${id}/toggle`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-            body: JSON.stringify({
-              id: id,
-            }),
-          });
-
-          const result = await response.json();
-          console.log(result);
-          handleFetchTodos(token);
-        } catch (error) {
-          console.log(error);
-        }
+      const handleToggleTodo = async (token: string, id: string) => {
+        await toggleTodo(token, id);
+        handleFetchTodos(token);
       };
 
       const sumUndone = todos.reduce((acc, todo) => {
@@ -143,14 +127,18 @@ const Dashboard = () => {
                       <img
                         src="src/assets/check_yellow.svg"
                         alt=""
-                        onClick={() => handleChangeStatus(todo.id)}
+                        onClick={() =>
+                          token && handleToggleTodo(token, todo.id)
+                        }
                       />
                     ) : (
                       <input
                         className="w-5 h-5"
                         type="checkbox"
                         checked={todo.status}
-                        onChange={(e) => handleChangeStatus(todo.id)}
+                        onChange={() =>
+                          token && handleToggleTodo(token, todo.id)
+                        }
                       />
                     )}
                     {editMode === todo.id && todo.status === false ? (
