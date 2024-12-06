@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { fetchTodos } from "../../reducers/todos/todoActions";
 import NavBar from "./NavBar";
+import TodoFilter from "./TodoFilter";
 import TodoInput from "./TodoInput";
 
 const Dashboard = () => {
@@ -27,27 +28,6 @@ const Dashboard = () => {
 
   const TodoList = () => {
     const [activeTab, setActiveTab] = useState("全部");
-
-    const Toggle = () => {
-      const tabs = ["全部", "待完成", "已完成"];
-
-      return (
-        <ul className="flex justify-evenly font-bold">
-          {tabs.map((item) => {
-            return (
-              <li
-                className={`text-center w-full py-4 cursor-pointer border-b-2
-                  ${activeTab === item ? "text-black border-black" : "text-darkGray border-lightGray"}`}
-                onClick={() => setActiveTab(item)}
-                key={item}
-              >
-                {item}
-              </li>
-            );
-          })}
-        </ul>
-      );
-    };
 
     const Content = () => {
       const [editedTodo, setEditedTodo] = useState("");
@@ -253,7 +233,7 @@ const Dashboard = () => {
         <TodoInput />
         {todos.length > 0 ? (
           <div className="bg-white rounded-custom shadow-custom">
-            <Toggle />
+            <TodoFilter activeTab={activeTab} setActiveTab={setActiveTab} />
             <Content />
           </div>
         ) : (
