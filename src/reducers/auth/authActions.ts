@@ -106,7 +106,7 @@ export const userLogout = async ({ token, dispatch }: UserLogoutParams) => {
     const response = await fetch(`${baseUrl}/users/sign_out`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        ...headers,
         Authorization: token,
       },
     });
