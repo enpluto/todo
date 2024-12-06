@@ -94,6 +94,7 @@ export const userLogin = async ({
         type: "LOGIN_SUCCESS",
         payload: { token: userData.token, username: userData.nickname },
       });
+      localStorage.setItem("email", data.email as string);
     }
   } catch (error) {
     throw error;

@@ -11,8 +11,9 @@ export interface LoginDataType {
 }
 
 const Login = () => {
-  const { email, setPage, state, dispatch } = useAuth();
+  const { setPage, state, dispatch } = useAuth();
   const navigate = useNavigate();
+  const storedEmail = localStorage.getItem("email") as string;
 
   const {
     register,
@@ -21,7 +22,7 @@ const Login = () => {
     setError,
   } = useForm({
     defaultValues: {
-      email: email,
+      email: storedEmail,
       password: "",
     },
   });
