@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { createTodo, fetchTodos } from "../../reducers/todos/todoActions";
+import { fetchTodos } from "../../reducers/todos/todoActions";
 import NavBar from "./NavBar";
+import TodoInput from "./TodoInput";
 
 const Dashboard = () => {
   const baseUrl = "https://todolist-api.hexschool.io";
@@ -10,8 +11,6 @@ const Dashboard = () => {
   const { state, todos, setTodos } = useAuth();
   const { token } = state;
   const [editMode, setEditMode] = useState("");
-
-  console.log(todos);
 
   useEffect(() => {
     if (state.token) {
@@ -28,38 +27,6 @@ const Dashboard = () => {
 
   const TodoList = () => {
     const [activeTab, setActiveTab] = useState("全部");
-
-    const TextInput = () => {
-      const [text, setText] = useState("");
-      const handleTypeIn = (e) => setText(e.target.value);
-
-      const handleCreateTodo = async (token: string, text: string) => {
-        if (!text) return;
-        await createTodo(token, text);
-        setText("");
-        handleFetchTodos(token);
-      };
-
-      return (
-        <div className="flex flex-col gap-y-4">
-          <div className="flex justify-between w-full bg-white rounded-custom shadow-custom">
-            <input
-              className="px-4 py-3 w-full rounded-custom"
-              placeholder="新增待辦事項"
-              type="text"
-              value={text}
-              onChange={handleTypeIn}
-            />
-            <img
-              src="src/assets/plus.svg"
-              alt=""
-              className="cursor-pointer p-1"
-              onClick={() => token && handleCreateTodo(token, text)}
-            />
-          </div>
-        </div>
-      );
-    };
 
     const Toggle = () => {
       const tabs = ["全部", "待完成", "已完成"];
@@ -283,7 +250,7 @@ const Dashboard = () => {
 
     return (
       <div className="flex flex-col gap-y-4 max-w-[311px] md:max-w-[500px] w-full mx-auto">
-        <TextInput />
+        <TodoInput />
         {todos.length > 0 ? (
           <div className="bg-white rounded-custom shadow-custom">
             <Toggle />
