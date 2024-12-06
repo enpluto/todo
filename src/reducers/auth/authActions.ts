@@ -94,6 +94,7 @@ export const userLogin = async ({
         type: "LOGIN_SUCCESS",
         payload: { token: userData.token, username: userData.nickname },
       });
+      localStorage.setItem("email", data.email as string);
     }
   } catch (error) {
     throw error;
@@ -105,7 +106,7 @@ export const userLogout = async ({ token, dispatch }: UserLogoutParams) => {
     const response = await fetch(`${baseUrl}/users/sign_out`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        ...headers,
         Authorization: token,
       },
     });

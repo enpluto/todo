@@ -10,7 +10,7 @@ export interface SignUpDataType {
 }
 
 const SignUp = () => {
-  const { setEmail, setPage } = useAuth();
+  const { setPage } = useAuth();
 
   const {
     register,
@@ -31,7 +31,7 @@ const SignUp = () => {
     const isSuccess = await userSignUp({ data, setError });
 
     if (isSuccess) {
-      setEmail(data.email);
+      localStorage.setItem("email", data.email);
       setPage("login");
     }
   };

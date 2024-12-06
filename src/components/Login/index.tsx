@@ -1,9 +1,8 @@
-import { useEffect, useReducer } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { userLogin } from "../../reducers/auth/authActions.ts";
-import { authReducer, initialState } from "../../reducers/auth/authReducer.ts";
 import { inputDataset } from "./data.ts";
 
 export interface LoginDataType {
@@ -12,9 +11,9 @@ export interface LoginDataType {
 }
 
 const Login = () => {
-  const [state, dispatch] = useReducer(authReducer, initialState);
-  const { email, setPage, setUsername } = useAuth();
+  const { setPage, state, dispatch } = useAuth();
   const navigate = useNavigate();
+  const storedEmail = localStorage.getItem("email") as string;
 
   const {
     register,
@@ -23,14 +22,13 @@ const Login = () => {
     setError,
   } = useForm({
     defaultValues: {
-      email: email,
+      email: storedEmail,
       password: "",
     },
   });
 
   useEffect(() => {
     if (state.token) {
-      setUsername(state.username);
       navigate("/dashboard");
     }
   }, [state.token]);
@@ -54,9 +52,9 @@ const Login = () => {
           type={type}
           {...register(id, validation)}
         />
-        {errors[id as keyof typeof errors] && (
+        {errors[id] && (
           <span className="text-error font-bold text-sm">
-            {errors[id as keyof typeof errors]?.message}
+            {errors[id]?.message}
           </span>
         )}
       </div>
