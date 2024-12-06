@@ -7,10 +7,11 @@ import NavBar from "./NavBar";
 const Dashboard = () => {
   const baseUrl = "https://todolist-api.hexschool.io";
   const navigate = useNavigate();
-  const { state } = useAuth();
+  const { state, todos, setTodos } = useAuth();
   const { token } = state;
-  const [todos, setTodos] = useState([]);
   const [editMode, setEditMode] = useState("");
+
+  console.log(todos);
 
   useEffect(() => {
     if (state.token) {

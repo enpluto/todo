@@ -13,11 +13,20 @@ import {
   initialState,
 } from "../reducers/auth/authReducer";
 
+interface Todo {
+  content: string;
+  createTime: number;
+  id: string;
+  status: boolean;
+}
+
 interface AuthContextType {
   page: string;
   setPage: React.Dispatch<React.SetStateAction<string>>;
   state: AuthState;
   dispatch: Dispatch<AuthAction>;
+  todos: Todo[];
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -30,10 +39,13 @@ interface AuthProviderProps {
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [page, setPage] = useState<string>("login");
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   return (
-    <AuthContext.Provider value={{ page, setPage, state, dispatch }}>
+    <AuthContext.Provider
+      value={{ page, setPage, state, dispatch, todos, setTodos }}
+    >
       {children}
     </AuthContext.Provider>
   );
