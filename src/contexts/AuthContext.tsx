@@ -1,14 +1,25 @@
-import { createContext, ReactNode, useState, useContext } from "react";
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  useContext,
+  useReducer,
+  useState,
+} from "react";
+import {
+  AuthAction,
+  authReducer,
+  AuthState,
+  initialState,
+} from "../reducers/auth/authReducer";
 
 interface AuthContextType {
   email: string | undefined;
   page: string;
-  token: string | undefined;
-  username: string | undefined;
   setEmail: React.Dispatch<React.SetStateAction<string | undefined>>;
   setPage: React.Dispatch<React.SetStateAction<string>>;
-  setToken: React.Dispatch<React.SetStateAction<string | undefined>>;
-  setUsername: React.Dispatch<React.SetStateAction<string | undefined>>;
+  state: AuthState;
+  dispatch: Dispatch<AuthAction>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -22,20 +33,17 @@ interface AuthProviderProps {
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [page, setPage] = useState<string>("login");
-  const [token, setToken] = useState<string | undefined>(undefined);
-  const [username, setUsername] = useState<string | undefined>(undefined);
+  const [state, dispatch] = useReducer(authReducer, initialState);
 
   return (
     <AuthContext.Provider
       value={{
         email,
         page,
-        token,
-        username,
         setEmail,
         setPage,
-        setToken,
-        setUsername,
+        state,
+        dispatch,
       }}
     >
       {children}

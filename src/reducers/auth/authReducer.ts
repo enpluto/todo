@@ -3,7 +3,7 @@ export const initialState = {
   username: undefined,
 };
 
-interface AuthState {
+export interface AuthState {
   token: string | null;
   username?: string;
 }
