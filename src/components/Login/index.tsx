@@ -52,9 +52,9 @@ const Login = () => {
           type={type}
           {...register(id, validation)}
         />
-        {errors[id as keyof typeof errors] && (
+        {errors[id] && (
           <span className="text-error font-bold text-sm">
-            {errors[id as keyof typeof errors]?.message}
+            {errors[id]?.message}
           </span>
         )}
       </div>
