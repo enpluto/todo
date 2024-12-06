@@ -21,6 +21,11 @@ type UserLoginParams = {
   setError: UseFormSetError<LoginDataType>;
 };
 
+type UserLogoutParams = {
+  dispatch: Dispatch<AuthAction>;
+  token: string;
+};
+
 export const userSignUp = async ({ data, setError }: UserSignUpParams) => {
   try {
     const response = await fetch(`${baseUrl}/users/sign_up`, {
@@ -88,6 +93,29 @@ export const userLogin = async ({
       dispatch({
         type: "LOGIN_SUCCESS",
         payload: { token: userData.token, username: userData.nickname },
+      });
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const userLogout = async ({ token, dispatch }: UserLogoutParams) => {
+  try {
+    const response = await fetch(`${baseUrl}/users/sign_out`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Logout failed.");
+    }
+    const result = await response.json();
+    if (result.status) {
+      dispatch({
+        type: "LOGOUT_SUCCESS",
       });
     }
   } catch (error) {

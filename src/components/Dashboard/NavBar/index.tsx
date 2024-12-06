@@ -1,35 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
+import { userLogout } from "../../../reducers/auth/authActions";
 
 const NavBar = () => {
   const navigate = useNavigate();
-  const { state } = useAuth();
-  const { token, username } = state;
+  const { state, dispatch } = useAuth();
+  const { username, token } = state;
 
-  const handleLogout = async () => {
-    const baseUrl = "https://todolist-api.hexschool.io";
-
-    if (!token) return;
-
-    try {
-      const response = await fetch(`${baseUrl}/users/sign_out`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "登出失敗");
-      }
-
-      localStorage.removeItem("token");
-      navigate("/");
-    } catch (error) {
-      console.log("錯誤:", error);
-    }
+  const handleLogout = async (token: string) => {
+    if (token) await userLogout({ token, dispatch });
+    navigate("/");
   };
 
   return (
@@ -40,7 +20,10 @@ const NavBar = () => {
       </div>
       <ol className="flex gap-x-6">
         <li className="hidden md:block font-bold">{username}的待辦</li>
-        <li className="cursor-pointer" onClick={handleLogout}>
+        <li
+          className="cursor-pointer"
+          onClick={() => token && handleLogout(token)}
+        >
           登出
         </li>
       </ol>
