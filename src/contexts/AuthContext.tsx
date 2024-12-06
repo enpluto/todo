@@ -14,9 +14,7 @@ import {
 } from "../reducers/auth/authReducer";
 
 interface AuthContextType {
-  email: string | undefined;
   page: string;
-  setEmail: React.Dispatch<React.SetStateAction<string | undefined>>;
   setPage: React.Dispatch<React.SetStateAction<string>>;
   state: AuthState;
   dispatch: Dispatch<AuthAction>;
@@ -31,21 +29,11 @@ interface AuthProviderProps {
 }
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [email, setEmail] = useState<string | undefined>(undefined);
   const [page, setPage] = useState<string>("login");
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   return (
-    <AuthContext.Provider
-      value={{
-        email,
-        page,
-        setEmail,
-        setPage,
-        state,
-        dispatch,
-      }}
-    >
+    <AuthContext.Provider value={{ page, setPage, state, dispatch }}>
       {children}
     </AuthContext.Provider>
   );
