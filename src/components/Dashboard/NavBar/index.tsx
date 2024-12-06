@@ -3,7 +3,8 @@ import { useAuth } from "../../../contexts/AuthContext";
 
 const NavBar = () => {
   const navigate = useNavigate();
-  const { token, nickname } = useAuth();
+  const { state } = useAuth();
+  const { token, username } = state;
 
   const handleLogout = async () => {
     const baseUrl = "https://todolist-api.hexschool.io";
@@ -38,7 +39,7 @@ const NavBar = () => {
         <span className="text-2xl font-bold font-baloo">ONLINE TODO LIST</span>
       </div>
       <ol className="flex gap-x-6">
-        <li className="hidden md:block font-bold">{nickname}的待辦</li>
+        <li className="hidden md:block font-bold">{username}的待辦</li>
         <li className="cursor-pointer" onClick={handleLogout}>
           登出
         </li>

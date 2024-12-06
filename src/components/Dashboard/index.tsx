@@ -6,17 +6,18 @@ import NavBar from "./NavBar";
 const Dashboard = () => {
   const baseUrl = "https://todolist-api.hexschool.io";
   const navigate = useNavigate();
-  const { token } = useAuth();
+  const { state } = useAuth();
+  const { token } = state;
   const [todos, setTodos] = useState([]);
   const [editMode, setEditMode] = useState("");
 
   useEffect(() => {
-    if (token) {
+    if (state.token) {
       getTodos();
     } else {
       navigate("/");
     }
-  }, [token]);
+  }, [state.token]);
 
   const getTodos = async () => {
     try {
