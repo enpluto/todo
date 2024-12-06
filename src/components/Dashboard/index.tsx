@@ -89,9 +89,11 @@ const Dashboard = () => {
         }
       };
 
-      const handleToggleTodo = async (token: string, id: string) => {
-        await toggleTodo(token, id);
-        handleFetchTodos(token);
+      const handleToggleTodo = async (id: string) => {
+        if (token) {
+          await toggleTodo(token, id);
+          handleFetchTodos(token);
+        }
       };
 
       const sumUndone = todos.reduce((acc, todo) => {
@@ -118,18 +120,14 @@ const Dashboard = () => {
                       <img
                         src="src/assets/check_yellow.svg"
                         alt=""
-                        onClick={() =>
-                          token && handleToggleTodo(token, todo.id)
-                        }
+                        onClick={() => handleToggleTodo(todo.id)}
                       />
                     ) : (
                       <input
                         className="w-5 h-5"
                         type="checkbox"
                         checked={todo.status}
-                        onChange={() =>
-                          token && handleToggleTodo(token, todo.id)
-                        }
+                        onChange={() => handleToggleTodo(todo.id)}
                       />
                     )}
                     {editMode === todo.id && todo.status === false ? (
