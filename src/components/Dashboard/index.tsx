@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { fetchTodos } from "../../reducers/todos/todoActions";
 import NavBar from "./NavBar";
 
 const Dashboard = () => {
@@ -13,27 +14,15 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (state.token) {
-      getTodos();
+      handleFetchTodos(state.token);
     } else {
       navigate("/");
     }
   }, [state.token]);
 
-  const getTodos = async () => {
-    try {
-      const response = await fetch(`${baseUrl}/todos`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-      });
-
-      const result = await response.json();
-      setTodos(result.data);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleFetchTodos = async (token: string) => {
+    const todoDataset = await fetchTodos(token);
+    setTodos(todoDataset);
   };
 
   const TodoList = () => {
@@ -61,7 +50,7 @@ const Dashboard = () => {
           setText("");
           const result = await response.json();
           console.log(result);
-          getTodos();
+          handleFetchTodos(token);
         } catch (error) {
           console.log("錯誤:", error);
         }
@@ -126,7 +115,7 @@ const Dashboard = () => {
           });
           const result = await response.json();
           console.log(result);
-          getTodos();
+          handleFetchTodos(token);
         } catch (error) {
           console.log(error);
         }
@@ -150,7 +139,7 @@ const Dashboard = () => {
           // 等待所有請求完成
           const result = await Promise.all(response);
           console.log("All completed todos deleted:", result);
-          getTodos();
+          handleFetchTodos(token);
         } catch (error) {
           console.log(error);
         }
@@ -171,7 +160,7 @@ const Dashboard = () => {
 
           const result = await response.json();
           console.log(result);
-          getTodos();
+          handleFetchTodos(token);
         } catch (error) {
           console.log(error);
         }
@@ -192,7 +181,7 @@ const Dashboard = () => {
 
           const result = await response.json();
           console.log(result);
-          getTodos();
+          handleFetchTodos(token);
         } catch (error) {
           console.log(error);
         }
