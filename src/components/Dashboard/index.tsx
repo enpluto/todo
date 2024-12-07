@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { fetchTodos } from "../../reducers/todos/todoActions";
+import {
+  deleteCompletedTodos,
+  deleteTodo,
+  editTodo,
+  fetchTodos,
+  toggleTodo,
+} from "../../reducers/todos/todoActions";
 import EmptyList from "./EmptyList";
 import NavBar from "./NavBar";
 import TodoFilter from "./TodoFilter";
 import TodoInput from "./TodoInput";
 
 const Dashboard = () => {
-  const baseUrl = "https://todolist-api.hexschool.io";
   const navigate = useNavigate();
   const { state, todos, setTodos } = useAuth();
   const { token } = state;
@@ -33,89 +38,31 @@ const Dashboard = () => {
     const Content = () => {
       const [editedTodo, setEditedTodo] = useState("");
 
-      const handleEditTodo = async (id, content) => {
-        try {
-          const response = await fetch(`${baseUrl}/todos/${id}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-            body: JSON.stringify({
-              content: content,
-            }),
-          });
-          const result = await response.json();
-          console.log(result);
+      const handleEditTodo = async (id: string, content: string) => {
+        if (token) {
+          await editTodo(token, id, content);
           handleFetchTodos(token);
-        } catch (error) {
-          console.log(error);
         }
       };
 
       const handleDeleteAllDone = async () => {
-        const doneTodos = todos.filter((todo) => todo.status === true);
-        if (!doneTodos.length) return;
-
-        try {
-          const response = doneTodos.map((todo) =>
-            fetch(`${baseUrl}/todos/${todo.id}`, {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: token,
-              },
-            })
-          );
-
-          // 等待所有請求完成
-          const result = await Promise.all(response);
-          console.log("All completed todos deleted:", result);
+        if (token) {
+          await deleteCompletedTodos(token, todos);
           handleFetchTodos(token);
-        } catch (error) {
-          console.log(error);
         }
       };
 
-      const handleDeleteTodo = async (id) => {
-        try {
-          const response = await fetch(`${baseUrl}/todos/${id}`, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-            body: JSON.stringify({
-              id: id,
-            }),
-          });
-
-          const result = await response.json();
-          console.log(result);
+      const handleDeleteTodo = async (id: string) => {
+        if (token) {
+          await deleteTodo(token, id);
           handleFetchTodos(token);
-        } catch (error) {
-          console.log(error);
         }
       };
 
-      const handleChangeStatus = async (id) => {
-        try {
-          const response = await fetch(`${baseUrl}/todos/${id}/toggle`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-            body: JSON.stringify({
-              id: id,
-            }),
-          });
-
-          const result = await response.json();
-          console.log(result);
+      const handleToggleTodo = async (id: string) => {
+        if (token) {
+          await toggleTodo(token, id);
           handleFetchTodos(token);
-        } catch (error) {
-          console.log(error);
         }
       };
 
@@ -143,14 +90,14 @@ const Dashboard = () => {
                       <img
                         src="src/assets/check_yellow.svg"
                         alt=""
-                        onClick={() => handleChangeStatus(todo.id)}
+                        onClick={() => handleToggleTodo(todo.id)}
                       />
                     ) : (
                       <input
                         className="w-5 h-5"
                         type="checkbox"
                         checked={todo.status}
-                        onChange={(e) => handleChangeStatus(todo.id)}
+                        onChange={() => handleToggleTodo(todo.id)}
                       />
                     )}
                     {editMode === todo.id && todo.status === false ? (
