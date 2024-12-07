@@ -69,6 +69,11 @@ const TodoList = ({ activeTab }: TodoListProp) => {
       setEditingId("");
     };
 
+    const handleStartEditing = () => {
+      setEditingId(id);
+      setEditedTodo(content);
+    };
+
     return isEditing ? (
       <div className="flex justify-between gap-x-3 items-center w-full">
         <input
@@ -91,10 +96,7 @@ const TodoList = ({ activeTab }: TodoListProp) => {
         </span>
         <span
           className={`text-darkGray cursor-pointer whitespace-nowrap ${status ? "hidden" : "block"}`}
-          onClick={() => {
-            setEditingId(id);
-            setEditedTodo(content);
-          }}
+          onClick={handleStartEditing}
         >
           編輯
         </span>
