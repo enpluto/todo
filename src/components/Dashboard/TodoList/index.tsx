@@ -28,13 +28,6 @@ const TodoList = ({ activeTab }: TodoListProp) => {
     }
   };
 
-  const handleDeleteTodo = async (id: string) => {
-    if (token) {
-      await deleteTodo(token, id);
-      handleFetchTodos(token);
-    }
-  };
-
   const sumUndone = todos.reduce((acc, todo) => {
     return acc + (todo.status === false ? 1 : 0);
   }, 0);
@@ -125,6 +118,13 @@ const TodoList = ({ activeTab }: TodoListProp) => {
 
   const TodoItem = ({ todo }: { todo: Todo }) => {
     const { id } = todo;
+
+    const handleDeleteTodo = async () => {
+      if (!token) return;
+      await deleteTodo(token, id);
+      handleFetchTodos(token);
+    };
+
     return (
       <li className="flex justify-between gap-x-2 border-b md:border-none border-lightGray">
         <div className="flex gap-x-4 items-center w-full pb-4 md:border-b border-lightGray">
@@ -135,7 +135,7 @@ const TodoList = ({ activeTab }: TodoListProp) => {
           src="src/assets/close.svg"
           alt=""
           className="pb-4 cursor-pointer"
-          onClick={() => handleDeleteTodo(id)}
+          onClick={handleDeleteTodo}
         />
       </li>
     );
