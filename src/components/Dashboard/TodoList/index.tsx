@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import {
   deleteCompletedTodos,
@@ -15,15 +15,8 @@ interface TodoListProp {
 const TodoList = ({ activeTab }: TodoListProp) => {
   const [editedTodo, setEditedTodo] = useState("");
   const [editMode, setEditMode] = useState("");
-
   const { state, todos, setTodos } = useAuth();
   const { token } = state;
-
-  useEffect(() => {
-    if (token) {
-      handleFetchTodos(token);
-    }
-  }, [token]);
 
   const handleFetchTodos = async (token: string) => {
     const todoDataset = await fetchTodos(token);
