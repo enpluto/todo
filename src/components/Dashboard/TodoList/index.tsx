@@ -5,11 +5,15 @@ import TodoItem from "./TodoItem";
 const TodoList = ({ activeTab }: { activeTab: string }) => {
   const { state, todos, handleFetchTodos } = useAuth();
   const { token } = state;
+  const hasCompletedTodos = todos.some((todo) => todo.status);
 
   const handleDeleteAllCompleted = async () => {
     if (!token) return;
-    await deleteCompletedTodos(token, todos);
-    handleFetchTodos(token);
+
+    if (hasCompletedTodos) {
+      await deleteCompletedTodos(token, todos);
+      handleFetchTodos(token);
+    }
   };
 
   const filterTodosByTab = (todos: Todo[], activeTab: string): Todo[] => {
