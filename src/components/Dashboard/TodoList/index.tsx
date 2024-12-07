@@ -6,11 +6,10 @@ const TodoList = ({ activeTab }: { activeTab: string }) => {
   const { state, todos, handleFetchTodos } = useAuth();
   const { token } = state;
 
-  const handleDeleteAllDone = async () => {
-    if (token) {
-      await deleteCompletedTodos(token, todos);
-      handleFetchTodos(token);
-    }
+  const handleDeleteAllCompleted = async () => {
+    if (!token) return;
+    await deleteCompletedTodos(token, todos);
+    handleFetchTodos(token);
   };
 
   const sumUndone = todos.reduce((acc, todo) => {
@@ -33,7 +32,7 @@ const TodoList = ({ activeTab }: { activeTab: string }) => {
           <li>{sumUndone} 個待完成項目</li>
           <li
             className="text-darkGray md:pr-8 cursor-pointer"
-            onClick={handleDeleteAllDone}
+            onClick={handleDeleteAllCompleted}
           >
             清除已完成項目
           </li>
