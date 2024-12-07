@@ -13,7 +13,7 @@ import {
   initialState,
 } from "../reducers/auth/authReducer";
 
-interface Todo {
+export interface Todo {
   content: string;
   createTime: number;
   id: string;

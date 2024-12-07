@@ -1,3 +1,5 @@
+import { Todo } from "../../contexts/AuthContext";
+
 const baseUrl = "https://todolist-api.hexschool.io";
 const headers = {
   "Content-Type": "application/json",
@@ -83,6 +85,25 @@ export const deleteTodo = async (token: string, id: string) => {
         id: id,
       }),
     });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteCompletedTodos = async (token: string, todos: Todo[]) => {
+  const completedTodos = todos.filter((todo) => todo.status === true);
+  if (!completedTodos.length) return;
+
+  try {
+    completedTodos.map((todo) =>
+      fetch(`${baseUrl}/todos/${todo.id}`, {
+        method: "DELETE",
+        headers: {
+          ...headers,
+          Authorization: token,
+        },
+      })
+    );
   } catch (error) {
     throw error;
   }

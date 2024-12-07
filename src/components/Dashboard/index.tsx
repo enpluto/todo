@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import {
+  deleteCompletedTodos,
   deleteTodo,
   editTodo,
   fetchTodos,
@@ -13,7 +14,6 @@ import TodoFilter from "./TodoFilter";
 import TodoInput from "./TodoInput";
 
 const Dashboard = () => {
-  const baseUrl = "https://todolist-api.hexschool.io";
   const navigate = useNavigate();
   const { state, todos, setTodos } = useAuth();
   const { token } = state;
@@ -46,26 +46,9 @@ const Dashboard = () => {
       };
 
       const handleDeleteAllDone = async () => {
-        const doneTodos = todos.filter((todo) => todo.status === true);
-        if (!doneTodos.length) return;
-
-        try {
-          const response = doneTodos.map((todo) =>
-            fetch(`${baseUrl}/todos/${todo.id}`, {
-              method: "DELETE",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: token,
-              },
-            })
-          );
-
-          // 等待所有請求完成
-          const result = await Promise.all(response);
-          console.log("All completed todos deleted:", result);
+        if (token) {
+          await deleteCompletedTodos(token, todos);
           handleFetchTodos(token);
-        } catch (error) {
-          console.log(error);
         }
       };
 
