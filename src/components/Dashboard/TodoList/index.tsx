@@ -53,9 +53,9 @@ const TodoList = ({ activeTab }: TodoListProp) => {
   });
 
   const EditTodo = ({ todo }: { todo: Todo }) => {
-    const [editedTodo, setEditedTodo] = useState("");
-    const [editingId, setEditingId] = useState("");
     const { id, status, content } = todo;
+    const [editedTodo, setEditedTodo] = useState(content);
+    const [editingId, setEditingId] = useState("");
 
     const isEditing = editingId === id && status === false;
     const isChanged = editedTodo !== "" && editedTodo !== content;
@@ -78,7 +78,7 @@ const TodoList = ({ activeTab }: TodoListProp) => {
       <div className="flex justify-between gap-x-3 items-center w-full">
         <input
           type="text"
-          defaultValue={content}
+          value={editedTodo}
           className="border border-darkGray rounded-md p-1 w-full"
           onChange={(e) => setEditedTodo(e.target.value)}
         />
