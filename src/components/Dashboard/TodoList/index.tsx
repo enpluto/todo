@@ -1,8 +1,5 @@
 import { useAuth } from "../../../contexts/AuthContext";
-import {
-  deleteCompletedTodos,
-  fetchTodos,
-} from "../../../reducers/todos/todoActions";
+import { deleteCompletedTodos } from "../../../reducers/todos/todoActions";
 
 import TodoItem from "./TodoItem";
 interface TodoListProp {
@@ -10,13 +7,8 @@ interface TodoListProp {
 }
 
 const TodoList = ({ activeTab }: TodoListProp) => {
-  const { state, todos, setTodos } = useAuth();
+  const { state, todos, handleFetchTodos } = useAuth();
   const { token } = state;
-
-  const handleFetchTodos = async (token: string) => {
-    const todoDataset = await fetchTodos(token);
-    setTodos(todoDataset);
-  };
 
   const handleDeleteAllDone = async () => {
     if (token) {
