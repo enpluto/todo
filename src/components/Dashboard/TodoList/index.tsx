@@ -1,13 +1,10 @@
-import { useState } from "react";
-import { Todo, useAuth } from "../../../contexts/AuthContext";
+import { useAuth } from "../../../contexts/AuthContext";
 import {
   deleteCompletedTodos,
-  deleteTodo,
-  editTodo,
   fetchTodos,
-  toggleTodo,
 } from "../../../reducers/todos/todoActions";
 
+import TodoItem from "./TodoItem";
 interface TodoListProp {
   activeTab: string;
 }
@@ -37,109 +34,6 @@ const TodoList = ({ activeTab }: TodoListProp) => {
     if (activeTab === "已完成") return todo.status === true;
     return true;
   });
-
-  const EditTodo = ({ todo }: { todo: Todo }) => {
-    const { id, status, content } = todo;
-    const [editedTodo, setEditedTodo] = useState(content);
-    const [editingId, setEditingId] = useState("");
-
-    const isEditing = editingId === id && status === false;
-    const isChanged = editedTodo !== "" && editedTodo !== content;
-
-    const handleEditTodo = async () => {
-      if (!token) return;
-      if (isChanged) {
-        await editTodo(token, id, editedTodo);
-        handleFetchTodos(token);
-      }
-      setEditingId("");
-    };
-
-    const handleStartEditing = () => {
-      setEditingId(id);
-      setEditedTodo(content);
-    };
-
-    return isEditing ? (
-      <div className="flex justify-between gap-x-3 items-center w-full">
-        <input
-          type="text"
-          value={editedTodo}
-          className="border border-darkGray rounded-md p-1 w-full"
-          onChange={(e) => setEditedTodo(e.target.value)}
-        />
-        <span
-          className="text-darkGray cursor-pointer whitespace-nowrap"
-          onClick={handleEditTodo}
-        >
-          完成
-        </span>
-      </div>
-    ) : (
-      <div className="flex justify-between items-center w-full">
-        <span className={status ? "text-darkGray line-through" : ""}>
-          {content}
-        </span>
-        <span
-          className={`text-darkGray cursor-pointer whitespace-nowrap ${status ? "hidden" : "block"}`}
-          onClick={handleStartEditing}
-        >
-          編輯
-        </span>
-      </div>
-    );
-  };
-
-  const TodoStatus = ({ todo }: { todo: Todo }) => {
-    const { status, id } = todo;
-    const isCompleted = status === true;
-
-    const handleToggleTodo = async () => {
-      if (!token) return;
-      await toggleTodo(token, id);
-      handleFetchTodos(token);
-    };
-
-    return isCompleted ? (
-      <img
-        src="src/assets/check_yellow.svg"
-        alt=""
-        onClick={handleToggleTodo}
-      />
-    ) : (
-      <input
-        className="w-5 h-5"
-        type="checkbox"
-        checked={status}
-        onChange={handleToggleTodo}
-      />
-    );
-  };
-
-  const TodoItem = ({ todo }: { todo: Todo }) => {
-    const { id } = todo;
-
-    const handleDeleteTodo = async () => {
-      if (!token) return;
-      await deleteTodo(token, id);
-      handleFetchTodos(token);
-    };
-
-    return (
-      <li className="flex justify-between gap-x-2 border-b md:border-none border-lightGray">
-        <div className="flex gap-x-4 items-center w-full pb-4 md:border-b border-lightGray">
-          <TodoStatus todo={todo} />
-          <EditTodo todo={todo} />
-        </div>
-        <img
-          src="src/assets/close.svg"
-          alt=""
-          className="pb-4 cursor-pointer"
-          onClick={handleDeleteTodo}
-        />
-      </li>
-    );
-  };
 
   return (
     <div className="p-4">
