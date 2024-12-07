@@ -21,13 +21,6 @@ const TodoList = ({ activeTab }: TodoListProp) => {
     setTodos(todoDataset);
   };
 
-  const handleEditTodo = async (id: string, content: string) => {
-    if (token) {
-      await editTodo(token, id, content);
-      handleFetchTodos(token);
-    }
-  };
-
   const handleDeleteAllDone = async () => {
     if (token) {
       await deleteCompletedTodos(token, todos);
@@ -62,9 +55,19 @@ const TodoList = ({ activeTab }: TodoListProp) => {
   const EditTodo = ({ todo }: { todo: Todo }) => {
     const [editedTodo, setEditedTodo] = useState("");
     const [editingId, setEditingId] = useState("");
-
     const { id, status, content } = todo;
+
     const isEditing = editingId === id && status === false;
+    const isChanged = editedTodo !== "" && editedTodo !== content;
+
+    const handleEditTodo = async () => {
+      if (!token) return;
+      if (isChanged) {
+        await editTodo(token, id, editedTodo);
+        handleFetchTodos(token);
+      }
+      setEditingId("");
+    };
 
     return isEditing ? (
       <div className="flex justify-between gap-x-3 items-center w-full">
@@ -76,12 +79,7 @@ const TodoList = ({ activeTab }: TodoListProp) => {
         />
         <span
           className="text-darkGray cursor-pointer whitespace-nowrap"
-          onClick={() => {
-            if (editedTodo !== "" && editedTodo !== content) {
-              handleEditTodo(id, editedTodo);
-            }
-            setEditingId("");
-          }}
+          onClick={handleEditTodo}
         >
           完成
         </span>
