@@ -12,17 +12,22 @@ const TodoList = ({ activeTab }: { activeTab: string }) => {
     handleFetchTodos(token);
   };
 
+  const filterTodosByTab = (todos: Todo[], activeTab: string): Todo[] => {
+    switch (activeTab) {
+      case "待完成":
+        return todos.filter((todo) => !todo.status);
+      case "已完成":
+        return todos.filter((todo) => todo.status);
+      default:
+        return todos;
+    }
+  };
+  const filteredTodos = filterTodosByTab(todos, activeTab);
+
   const countRemainingTodos = (todos: Todo[]): number => {
     return todos.filter((todo) => !todo.status).length;
   };
-
   const remainingTodos = countRemainingTodos(todos);
-
-  const filteredTodos = todos.filter((todo) => {
-    if (activeTab === "待完成") return todo.status === false;
-    if (activeTab === "已完成") return todo.status === true;
-    return true;
-  });
 
   return (
     <div className="p-4">
