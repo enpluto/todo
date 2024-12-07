@@ -104,6 +104,26 @@ const TodoList = ({ activeTab }: TodoListProp) => {
     );
   };
 
+  const TodoStatus = ({ todo }: { todo: Todo }) => {
+    const { status } = todo;
+    const isCompleted = status === true;
+
+    return isCompleted ? (
+      <img
+        src="src/assets/check_yellow.svg"
+        alt=""
+        onClick={() => handleToggleTodo(todo.id)}
+      />
+    ) : (
+      <input
+        className="w-5 h-5"
+        type="checkbox"
+        checked={status}
+        onChange={() => handleToggleTodo(todo.id)}
+      />
+    );
+  };
+
   return (
     <div className="p-4">
       <ul className="flex flex-col gap-y-4">
@@ -114,20 +134,7 @@ const TodoList = ({ activeTab }: TodoListProp) => {
               key={todo.id}
             >
               <div className="flex gap-x-4 items-center w-full pb-4 md:border-b border-lightGray">
-                {todo.status ? (
-                  <img
-                    src="src/assets/check_yellow.svg"
-                    alt=""
-                    onClick={() => handleToggleTodo(todo.id)}
-                  />
-                ) : (
-                  <input
-                    className="w-5 h-5"
-                    type="checkbox"
-                    checked={todo.status}
-                    onChange={() => handleToggleTodo(todo.id)}
-                  />
-                )}
+                <TodoStatus todo={todo} />
                 <EditTodo todo={todo} />
               </div>
               <img
