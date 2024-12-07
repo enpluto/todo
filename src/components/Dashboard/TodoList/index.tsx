@@ -1,4 +1,4 @@
-import { useAuth } from "../../../contexts/AuthContext";
+import { Todo, useAuth } from "../../../contexts/AuthContext";
 import { deleteCompletedTodos } from "../../../reducers/todos/todoActions";
 import TodoItem from "./TodoItem";
 
@@ -12,9 +12,11 @@ const TodoList = ({ activeTab }: { activeTab: string }) => {
     handleFetchTodos(token);
   };
 
-  const sumUndone = todos.reduce((acc, todo) => {
-    return acc + (todo.status === false ? 1 : 0);
-  }, 0);
+  const countRemainingTodos = (todos: Todo[]): number => {
+    return todos.filter((todo) => !todo.status).length;
+  };
+
+  const remainingTodos = countRemainingTodos(todos);
 
   const filteredTodos = todos.filter((todo) => {
     if (activeTab === "待完成") return todo.status === false;
@@ -29,7 +31,7 @@ const TodoList = ({ activeTab }: { activeTab: string }) => {
           <TodoItem key={todo.id} todo={todo} />
         ))}
         <ol className="flex justify-between py-2">
-          <li>{sumUndone} 個待完成項目</li>
+          <li>{remainingTodos} 個待完成項目</li>
           <li
             className="text-darkGray md:pr-8 cursor-pointer"
             onClick={handleDeleteAllCompleted}
