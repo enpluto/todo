@@ -1,12 +1,8 @@
 import { useAuth } from "../../../contexts/AuthContext";
 import { deleteCompletedTodos } from "../../../reducers/todos/todoActions";
-
 import TodoItem from "./TodoItem";
-interface TodoListProp {
-  activeTab: string;
-}
 
-const TodoList = ({ activeTab }: TodoListProp) => {
+const TodoList = ({ activeTab }: { activeTab: string }) => {
   const { state, todos, handleFetchTodos } = useAuth();
   const { token } = state;
 
