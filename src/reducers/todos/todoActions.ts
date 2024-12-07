@@ -70,3 +70,20 @@ export const editTodo = async (token: string, id: string, content: string) => {
     throw error;
   }
 };
+
+export const deleteTodo = async (token: string, id: string) => {
+  try {
+    await fetch(`${baseUrl}/todos/${id}`, {
+      method: "DELETE",
+      headers: {
+        ...headers,
+        Authorization: token,
+      },
+      body: JSON.stringify({
+        id: id,
+      }),
+    });
+  } catch (error) {
+    throw error;
+  }
+};

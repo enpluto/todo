@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import {
+  deleteTodo,
   editTodo,
   fetchTodos,
   toggleTodo,
@@ -68,24 +69,10 @@ const Dashboard = () => {
         }
       };
 
-      const handleDeleteTodo = async (id) => {
-        try {
-          const response = await fetch(`${baseUrl}/todos/${id}`, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: token,
-            },
-            body: JSON.stringify({
-              id: id,
-            }),
-          });
-
-          const result = await response.json();
-          console.log(result);
+      const handleDeleteTodo = async (id: string) => {
+        if (token) {
+          await deleteTodo(token, id);
           handleFetchTodos(token);
-        } catch (error) {
-          console.log(error);
         }
       };
 
