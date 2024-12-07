@@ -123,28 +123,30 @@ const TodoList = ({ activeTab }: TodoListProp) => {
     );
   };
 
+  const TodoItem = ({ todo }: { todo: Todo }) => {
+    const { id } = todo;
+    return (
+      <li className="flex justify-between gap-x-2 border-b md:border-none border-lightGray">
+        <div className="flex gap-x-4 items-center w-full pb-4 md:border-b border-lightGray">
+          <TodoStatus todo={todo} />
+          <EditTodo todo={todo} />
+        </div>
+        <img
+          src="src/assets/close.svg"
+          alt=""
+          className="pb-4 cursor-pointer"
+          onClick={() => handleDeleteTodo(id)}
+        />
+      </li>
+    );
+  };
+
   return (
     <div className="p-4">
       <ul className="flex flex-col gap-y-4">
-        {filteredTodos.map((todo) => {
-          return (
-            <li
-              className="flex justify-between gap-x-2 border-b md:border-none border-lightGray"
-              key={todo.id}
-            >
-              <div className="flex gap-x-4 items-center w-full pb-4 md:border-b border-lightGray">
-                <TodoStatus todo={todo} />
-                <EditTodo todo={todo} />
-              </div>
-              <img
-                src="src/assets/close.svg"
-                alt=""
-                className="pb-4 cursor-pointer"
-                onClick={() => handleDeleteTodo(todo.id)}
-              />
-            </li>
-          );
-        })}
+        {filteredTodos.map((todo) => (
+          <TodoItem key={todo.id} todo={todo} />
+        ))}
         <ol className="flex justify-between py-2">
           <li>{sumUndone} 個待完成項目</li>
           <li
