@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../../../contexts/AuthContext";
+import { Todo, useAuth } from "../../../contexts/AuthContext";
 import {
   deleteCompletedTodos,
   deleteTodo,
@@ -13,8 +13,6 @@ interface TodoListProp {
 }
 
 const TodoList = ({ activeTab }: TodoListProp) => {
-  const [editedTodo, setEditedTodo] = useState("");
-  const [editMode, setEditMode] = useState("");
   const { state, todos, setTodos } = useAuth();
   const { token } = state;
 
@@ -61,6 +59,51 @@ const TodoList = ({ activeTab }: TodoListProp) => {
     return true;
   });
 
+  const EditTodo = ({ todo }: { todo: Todo }) => {
+    const [editedTodo, setEditedTodo] = useState("");
+    const [editingId, setEditingId] = useState("");
+
+    const { id, status, content } = todo;
+    const isEditing = editingId === id && status === false;
+
+    return isEditing ? (
+      <div className="flex justify-between gap-x-3 items-center w-full">
+        <input
+          type="text"
+          defaultValue={content}
+          className="border border-darkGray rounded-md p-1 w-full"
+          onChange={(e) => setEditedTodo(e.target.value)}
+        />
+        <span
+          className="text-darkGray cursor-pointer whitespace-nowrap"
+          onClick={() => {
+            if (editedTodo !== "" && editedTodo !== content) {
+              handleEditTodo(id, editedTodo);
+            }
+            setEditingId("");
+          }}
+        >
+          完成
+        </span>
+      </div>
+    ) : (
+      <div className="flex justify-between items-center w-full">
+        <span className={status ? "text-darkGray line-through" : ""}>
+          {content}
+        </span>
+        <span
+          className={`text-darkGray cursor-pointer whitespace-nowrap ${status ? "hidden" : "block"}`}
+          onClick={() => {
+            setEditingId(id);
+            setEditedTodo(content);
+          }}
+        >
+          編輯
+        </span>
+      </div>
+    );
+  };
+
   return (
     <div className="p-4">
       <ul className="flex flex-col gap-y-4">
@@ -85,46 +128,7 @@ const TodoList = ({ activeTab }: TodoListProp) => {
                     onChange={() => handleToggleTodo(todo.id)}
                   />
                 )}
-                {editMode === todo.id && todo.status === false ? (
-                  <div className="flex justify-between gap-x-3 items-center w-full">
-                    <input
-                      type="text"
-                      defaultValue={todo.content}
-                      className="border border-darkGray rounded-md p-1 w-full"
-                      onChange={(e) => setEditedTodo(e.target.value)}
-                    />
-                    <span
-                      className="text-darkGray cursor-pointer whitespace-nowrap"
-                      onClick={() => {
-                        if (editedTodo !== "" && editedTodo !== todo.content) {
-                          handleEditTodo(todo.id, editedTodo);
-                        }
-                        setEditMode("");
-                      }}
-                    >
-                      完成
-                    </span>
-                  </div>
-                ) : (
-                  <div className="flex justify-between items-center w-full">
-                    <span
-                      className={
-                        todo.status ? "text-darkGray line-through" : ""
-                      }
-                    >
-                      {todo.content}
-                    </span>
-                    <span
-                      className={`text-darkGray cursor-pointer whitespace-nowrap ${todo.status ? "hidden" : "block"}`}
-                      onClick={() => {
-                        setEditMode(todo.id);
-                        setEditedTodo(todo.content);
-                      }}
-                    >
-                      編輯
-                    </span>
-                  </div>
-                )}
+                <EditTodo todo={todo} />
               </div>
               <img
                 src="src/assets/close.svg"
