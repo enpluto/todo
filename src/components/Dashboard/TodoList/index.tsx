@@ -35,13 +35,6 @@ const TodoList = ({ activeTab }: TodoListProp) => {
     }
   };
 
-  const handleToggleTodo = async (id: string) => {
-    if (token) {
-      await toggleTodo(token, id);
-      handleFetchTodos(token);
-    }
-  };
-
   const sumUndone = todos.reduce((acc, todo) => {
     return acc + (todo.status === false ? 1 : 0);
   }, 0);
@@ -105,21 +98,27 @@ const TodoList = ({ activeTab }: TodoListProp) => {
   };
 
   const TodoStatus = ({ todo }: { todo: Todo }) => {
-    const { status } = todo;
+    const { status, id } = todo;
     const isCompleted = status === true;
+
+    const handleToggleTodo = async () => {
+      if (!token) return;
+      await toggleTodo(token, id);
+      handleFetchTodos(token);
+    };
 
     return isCompleted ? (
       <img
         src="src/assets/check_yellow.svg"
         alt=""
-        onClick={() => handleToggleTodo(todo.id)}
+        onClick={handleToggleTodo}
       />
     ) : (
       <input
         className="w-5 h-5"
         type="checkbox"
         checked={status}
-        onChange={() => handleToggleTodo(todo.id)}
+        onChange={handleToggleTodo}
       />
     );
   };
