@@ -4,9 +4,10 @@ type InputNameType = {
   email: string;
   username: string;
   password: string;
+  confirmPassword: string;
 };
 
-type InputName = "email" | "username" | "password";
+type InputName = "email" | "username" | "password" | "confirmPassword";
 
 export interface SignUpInputType {
   labelName: string;

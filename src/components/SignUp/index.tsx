@@ -60,26 +60,20 @@ const SignUp = () => {
       <div className="flex flex-col gap-y-4">
         {initInputs}
         <div className="flex flex-col gap-y-1">
-          <label className="text-sm font-bold" htmlFor="confirmPassword">
-            再次輸入密碼
-          </label>
-          <input
-            className="rounded-custom px-4 py-3"
-            placeholder="請再次輸入密碼"
+          <InputField
             id="confirmPassword"
+            htmlFor="confirmPassword"
+            labelName="再次輸入密碼"
+            placeholder="請再次輸入密碼"
             type="password"
-            {...register("confirmPassword", {
+            register={register}
+            errors={errors}
+            validation={{
               required: "此欄位不可為空",
-              minLength: { value: 6, message: "長度不足6個字" },
-              validate: (value) =>
+              validate: (value: string) =>
                 value === getValues("password") || "請再次確認密碼",
-            })}
+            }}
           />
-          {errors.confirmPassword && (
-            <span className="text-error font-bold text-sm">
-              {errors.confirmPassword?.message}
-            </span>
-          )}
         </div>
       </div>
       <button
