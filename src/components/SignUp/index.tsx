@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 import { useAuth } from "../../contexts/AuthContext";
 import { userSignUp } from "../../reducers/auth/authActions";
 import { inputDataset } from "./data";
@@ -32,6 +33,13 @@ const SignUp = () => {
 
     if (isSuccess) {
       localStorage.setItem("email", data.email);
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "註冊成功",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       setPage("login");
     }
   };
