@@ -1,3 +1,4 @@
+import checkIcon from "./assets/check.svg";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import { useAuth } from "./contexts/AuthContext";
@@ -11,7 +12,7 @@ function Layout() {
       <div className="flex flex-col gap-y-4 justify-center w-full max-w-[386px]">
         {/* logo */}
         <div className="flex justify-center">
-          <img src="src/assets/check.svg" alt="" width="46" />
+          <img src={checkIcon} alt="check icon" width="46" />
           <span className="text-[32px] font-bold font-baloo">
             ONLINE TODO LIST
           </span>
