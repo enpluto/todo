@@ -22,8 +22,8 @@ export interface Todo {
 }
 
 interface AuthContextType {
-  page: string;
-  setPage: React.Dispatch<React.SetStateAction<string>>;
+  page: "login" | "signup";
+  setPage: React.Dispatch<React.SetStateAction<"login" | "signup">>;
   state: AuthState;
   dispatch: Dispatch<AuthAction>;
   todos: Todo[];
@@ -40,7 +40,7 @@ interface AuthProviderProps {
 }
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [page, setPage] = useState<string>("login");
+  const [page, setPage] = useState<"login" | "signup">("login");
   const [todos, setTodos] = useState<Todo[]>([]);
   const [state, dispatch] = useReducer(authReducer, initialState);
 
