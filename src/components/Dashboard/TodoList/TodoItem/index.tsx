@@ -15,7 +15,7 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
   };
 
   return (
-    <li className="flex justify-between gap-x-2 border-b md:border-none border-lightGray">
+    <li className="flex justify-between gap-x-4 border-b md:border-none border-lightGray">
       <div className="flex gap-x-4 items-center w-full pb-4 md:border-b border-lightGray">
         <TodoStatus todo={todo} />
         <EditTodo todo={todo} />

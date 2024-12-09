@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import { Todo, useAuth } from "../../../contexts/AuthContext";
 import { deleteCompletedTodos } from "../../../reducers/todos/todoActions";
 import TodoItem from "./TodoItem";
@@ -11,8 +12,20 @@ const TodoList = ({ activeTab }: { activeTab: string }) => {
     if (!token) return;
 
     if (hasCompletedTodos) {
-      await deleteCompletedTodos(token, todos);
-      handleFetchTodos(token);
+      Swal.fire({
+        title: "確認清除所有已完成項目？",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "確認刪除",
+        cancelButtonText: "取消",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          deleteCompletedTodos(token, todos);
+          handleFetchTodos(token);
+        }
+      });
     }
   };
 
