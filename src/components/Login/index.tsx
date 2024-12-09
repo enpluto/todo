@@ -13,7 +13,7 @@ export interface LoginDataType {
 const Login = () => {
   const { setPage, state, dispatch } = useAuth();
   const navigate = useNavigate();
-  const storedEmail = localStorage.getItem("email") as string;
+  const storedEmail = localStorage.getItem("email") || "";
 
   const {
     register,
