@@ -11,7 +11,7 @@ export interface LoginDataType {
 }
 
 const Login = () => {
-  const { setPage, state, dispatch } = useAuth();
+  const { state, dispatch, handlePageChange } = useAuth();
   const navigate = useNavigate();
   const storedEmail = localStorage.getItem("email") || "";
 
@@ -85,7 +85,7 @@ const Login = () => {
       </button>
       <span
         className="font-bold text-center cursor-pointer"
-        onClick={() => setPage("signup")}
+        onClick={() => handlePageChange("signup")}
       >
         註冊帳號
       </span>

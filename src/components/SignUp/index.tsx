@@ -11,7 +11,7 @@ export interface SignUpDataType {
 }
 
 const SignUp = () => {
-  const { setPage } = useAuth();
+  const { handlePageChange } = useAuth();
 
   const {
     register,
@@ -40,7 +40,7 @@ const SignUp = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-      setPage("login");
+      handlePageChange("login");
     }
   };
 
@@ -109,7 +109,7 @@ const SignUp = () => {
       </button>
       <span
         className="font-bold text-center cursor-pointer"
-        onClick={() => setPage("login")}
+        onClick={() => handlePageChange("login")}
       >
         登入
       </span>
