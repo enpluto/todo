@@ -7,14 +7,14 @@ type InputNameType = {
 
 type InputName = keyof InputNameType;
 
-type InputDataType = {
+export interface InputDataType {
   labelName: string;
   htmlFor: InputName;
   placeholder: string;
   id: InputName;
   type: InputName;
   validation: RegisterOptions<InputNameType, InputName>;
-};
+}
 
 export const inputDataset: InputDataType[] = [
   {
