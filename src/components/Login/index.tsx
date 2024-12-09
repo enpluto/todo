@@ -31,11 +31,12 @@ const Login = () => {
     if (state.token) {
       navigate("/dashboard");
     }
-  }, [state.token]);
+  }, [state.token, navigate]);
 
   const handleLogin = async (data: LoginDataType) => {
     await userLogin({ dispatch, data, setError });
   };
+
   const InputField = ({
     id,
     htmlFor,
