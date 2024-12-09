@@ -7,7 +7,7 @@ type InputNameType = {
 
 type InputName = keyof InputNameType;
 
-export interface InputDataType {
+export interface LoginInputType {
   labelName: string;
   htmlFor: InputName;
   placeholder: string;
@@ -16,7 +16,7 @@ export interface InputDataType {
   validation: RegisterOptions<InputNameType, InputName>;
 }
 
-export const inputDataset: InputDataType[] = [
+export const inputDataset: LoginInputType[] = [
   {
     labelName: "Email",
     htmlFor: "email",
