@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { userLogin } from "../../reducers/auth/authActions.ts";
-import { inputDataset } from "./data.ts";
+import { inputDataset, InputDataType } from "./data.ts";
 
 export interface LoginDataType {
   email: string | undefined;
@@ -11,9 +11,9 @@ export interface LoginDataType {
 }
 
 const Login = () => {
-  const { setPage, state, dispatch } = useAuth();
+  const { state, dispatch, handlePageChange } = useAuth();
   const navigate = useNavigate();
-  const storedEmail = localStorage.getItem("email") as string;
+  const storedEmail = localStorage.getItem("email") || "";
 
   const {
     register,
@@ -31,35 +31,42 @@ const Login = () => {
     if (state.token) {
       navigate("/dashboard");
     }
-  }, [state.token]);
+  }, [state.token, navigate]);
 
   const handleLogin = async (data: LoginDataType) => {
     await userLogin({ dispatch, data, setError });
   };
 
-  const initInputs = inputDataset.map((input) => {
-    const { htmlFor, labelName, placeholder, id, type, validation } = input;
+  const InputField = ({
+    id,
+    htmlFor,
+    labelName,
+    placeholder,
+    type,
+    validation,
+  }: InputDataType) => (
+    <div className="flex flex-col gap-y-1" key={id}>
+      <label className="text-sm font-bold" htmlFor={htmlFor}>
+        {labelName}
+      </label>
+      <input
+        className="rounded-custom px-4 py-3"
+        placeholder={placeholder}
+        id={id}
+        type={type}
+        {...register(id, validation)}
+      />
+      {errors[id] && (
+        <span className="text-error font-bold text-sm">
+          {errors[id]?.message}
+        </span>
+      )}
+    </div>
+  );
 
-    return (
-      <div className="flex flex-col gap-y-1" key={id}>
-        <label className="text-sm font-bold" htmlFor={htmlFor}>
-          {labelName}
-        </label>
-        <input
-          className="rounded-custom px-4 py-3"
-          placeholder={placeholder}
-          id={id}
-          type={type}
-          {...register(id, validation)}
-        />
-        {errors[id] && (
-          <span className="text-error font-bold text-sm">
-            {errors[id]?.message}
-          </span>
-        )}
-      </div>
-    );
-  });
+  const initInputs = inputDataset.map((input) => (
+    <InputField key={input.id} {...input} />
+  ));
 
   return (
     <form
@@ -78,7 +85,7 @@ const Login = () => {
       </button>
       <span
         className="font-bold text-center cursor-pointer"
-        onClick={() => setPage("signup")}
+        onClick={() => handlePageChange("signup")}
       >
         註冊帳號
       </span>

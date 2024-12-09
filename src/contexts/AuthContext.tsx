@@ -22,13 +22,13 @@ export interface Todo {
 }
 
 interface AuthContextType {
-  page: string;
-  setPage: React.Dispatch<React.SetStateAction<string>>;
+  page: "login" | "signup";
   state: AuthState;
   dispatch: Dispatch<AuthAction>;
   todos: Todo[];
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
   handleFetchTodos: (token: string) => Promise<void>;
+  handlePageChange: (page: "login" | "signup") => void;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -40,7 +40,7 @@ interface AuthProviderProps {
 }
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [page, setPage] = useState<string>("login");
+  const [page, setPage] = useState<"login" | "signup">("login");
   const [todos, setTodos] = useState<Todo[]>([]);
   const [state, dispatch] = useReducer(authReducer, initialState);
 
@@ -49,16 +49,20 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setTodos(todoDataset);
   };
 
+  const handlePageChange = (page: "login" | "signup") => {
+    setPage(page);
+  };
+
   return (
     <AuthContext.Provider
       value={{
         page,
         todos,
-        setPage,
         setTodos,
         state,
         dispatch,
         handleFetchTodos,
+        handlePageChange,
       }}
     >
       {children}
