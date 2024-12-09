@@ -5,10 +5,6 @@ import { useAuth } from "./contexts/AuthContext";
 function Layout() {
   const { page } = useAuth();
 
-  const SwitchPage = () => {
-    return page === "login" ? <Login /> : <SignUp />;
-  };
-
   return (
     <main className="pt-12 md:pt-20 max-w-[375px] md:max-w-[1028px] mx-auto flex flex-col md:flex-row justify-evenly items-center">
       {/* left section */}
@@ -29,7 +25,9 @@ function Layout() {
         />
       </div>
       {/* right section */}
-      <div className="max-w-[304px] w-full mx-auto md:mx-0">{SwitchPage()}</div>
+      <div className="max-w-[304px] w-full mx-auto md:mx-0">
+        {page === "login" ? <Login /> : <SignUp />}
+      </div>
     </main>
   );
 }
