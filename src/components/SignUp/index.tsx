@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { useAuth } from "../../contexts/AuthContext";
 import { userSignUp } from "../../reducers/auth/authActions";
+import InputField from "../InputField";
 import { inputDataset } from "./data";
 
 export interface SignUpDataType {
@@ -44,29 +45,9 @@ const SignUp = () => {
     }
   };
 
-  const initInputs = inputDataset.map((input) => {
-    const { htmlFor, labelName, placeholder, id, type, validation } = input;
-
-    return (
-      <div className="flex flex-col gap-y-1" key={id}>
-        <label className="text-sm font-bold" htmlFor={htmlFor}>
-          {labelName}
-        </label>
-        <input
-          className="rounded-custom px-4 py-3"
-          placeholder={placeholder}
-          id={id}
-          type={type}
-          {...register(id, validation)}
-        />
-        {errors[id] && (
-          <span className="text-error font-bold text-sm">
-            {errors[id]?.message}
-          </span>
-        )}
-      </div>
-    );
-  });
+  const initInputs = inputDataset.map((input) => (
+    <InputField key={input.id} {...input} register={register} errors={errors} />
+  ));
 
   return (
     <form
