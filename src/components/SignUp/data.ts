@@ -8,16 +8,16 @@ type InputNameType = {
 
 type InputName = "email" | "username" | "password";
 
-type InputDataType = {
+export interface SignUpInputType {
   labelName: string;
   htmlFor: InputName;
   placeholder: string;
   id: InputName;
   type: "email" | "text" | "password";
   validation: RegisterOptions<InputNameType, InputName>;
-};
+}
 
-export const inputDataset: InputDataType[] = [
+export const inputDataset: SignUpInputType[] = [
   {
     labelName: "Email",
     htmlFor: "email",
