@@ -6,7 +6,7 @@ import AuthProvider from "./contexts/AppContext";
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/todo">
         <Routes>
           <Route path="/" element={<Layout />} />
           <Route path="/dashboard" element={<Dashboard />} />
