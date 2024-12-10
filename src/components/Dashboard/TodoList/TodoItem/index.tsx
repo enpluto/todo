@@ -1,11 +1,11 @@
 import deleteIcon from "../../../../assets/close.svg";
-import { Todo, useAuth } from "../../../../contexts/AppContext";
+import { Todo, useAppContext } from "../../../../contexts/AppContext";
 import { deleteTodo } from "../../../../reducers/todos/todoActions";
 import EditTodo from "../EditTodo";
 import TodoStatus from "../TodoStatus";
 
 const TodoItem = ({ todo }: { todo: Todo }) => {
-  const { state, handleFetchTodos } = useAuth();
+  const { state, handleFetchTodos } = useAppContext();
   const { token } = state;
   const { id } = todo;
 

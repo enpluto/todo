@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Todo, useAuth } from "../../../../contexts/AppContext";
+import { Todo, useAppContext } from "../../../../contexts/AppContext";
 import { editTodo } from "../../../../reducers/todos/todoActions";
 
 const EditTodo = ({ todo }: { todo: Todo }) => {
-  const { state, handleFetchTodos } = useAuth();
+  const { state, handleFetchTodos } = useAppContext();
   const { token } = state;
   const { id, status, content } = todo;
 

@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import checkIcon from "../../../assets/check.svg";
-import { useAuth } from "../../../contexts/AppContext";
+import { useAppContext } from "../../../contexts/AppContext";
 import { userLogout } from "../../../reducers/auth/authActions";
 
 const NavBar = () => {
   const navigate = useNavigate();
-  const { state, dispatch } = useAuth();
+  const { state, dispatch } = useAppContext();
   const { username, token } = state;
 
   const handleLogout = async (token: string) => {

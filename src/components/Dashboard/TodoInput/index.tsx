@@ -1,11 +1,11 @@
 import { useState } from "react";
 import plusIcon from "../../../assets/plus.svg";
-import { useAuth } from "../../../contexts/AppContext";
+import { useAppContext } from "../../../contexts/AppContext";
 import { createTodo, fetchTodos } from "../../../reducers/todos/todoActions";
 
 const TodoInput = () => {
   const [text, setText] = useState("");
-  const { state, setTodos } = useAuth();
+  const { state, setTodos } = useAppContext();
   const { token } = state;
 
   const handleTypeIn = (e: React.ChangeEvent<HTMLInputElement>) =>
