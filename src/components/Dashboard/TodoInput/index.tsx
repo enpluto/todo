@@ -1,4 +1,5 @@
 import { useState } from "react";
+import plusIcon from "../../../assets/plus.svg";
 import { useAuth } from "../../../contexts/AppContext";
 import { createTodo, fetchTodos } from "../../../reducers/todos/todoActions";
 
@@ -33,8 +34,8 @@ const TodoInput = () => {
           onChange={handleTypeIn}
         />
         <img
-          src="src/assets/plus.svg"
-          alt=""
+          src={plusIcon}
+          alt="plus icon"
           className="cursor-pointer p-1"
           onClick={() => token && handleCreateTodo(token, text)}
         />
