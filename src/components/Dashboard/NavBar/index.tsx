@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import checkIcon from "../../../assets/check.svg";
 import { useAuth } from "../../../contexts/AppContext";
 import { userLogout } from "../../../reducers/auth/authActions";
 
@@ -15,7 +16,7 @@ const NavBar = () => {
   return (
     <ul className="flex justify-between items-center w-full max-w-[311px] md:max-w-full mx-auto">
       <div className="flex justify-center items-center">
-        <img src="src/assets/check.svg" alt="" width="40" />
+        <img src={checkIcon} alt="check icon" width="40" />
         <span className="text-2xl font-bold font-baloo">ONLINE TODO LIST</span>
       </div>
       <ol className="flex gap-x-6">

@@ -1,3 +1,4 @@
+import deleteIcon from "../../../../assets/close.svg";
 import { Todo, useAuth } from "../../../../contexts/AppContext";
 import { deleteTodo } from "../../../../reducers/todos/todoActions";
 import EditTodo from "../EditTodo";
@@ -21,8 +22,8 @@ const TodoItem = ({ todo }: { todo: Todo }) => {
         <EditTodo todo={todo} />
       </div>
       <img
-        src="src/assets/close.svg"
-        alt=""
+        src={deleteIcon}
+        alt="delete icon"
         className="pb-4 cursor-pointer"
         onClick={handleDeleteTodo}
       />

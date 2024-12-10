@@ -1,3 +1,4 @@
+import checkedIcon from "../../../../assets/check_yellow.svg";
 import { Todo, useAuth } from "../../../../contexts/AppContext";
 import { toggleTodo } from "../../../../reducers/todos/todoActions";
 
@@ -14,7 +15,7 @@ const TodoStatus = ({ todo }: { todo: Todo }) => {
   };
 
   return isCompleted ? (
-    <img src="src/assets/check_yellow.svg" alt="" onClick={handleToggleTodo} />
+    <img src={checkedIcon} alt="checked icon" onClick={handleToggleTodo} />
   ) : (
     <input
       className="w-5 h-5"
