@@ -21,7 +21,7 @@ export interface Todo {
   status: boolean;
 }
 
-interface AuthContextType {
+interface AppContextType {
   page: "login" | "signup";
   state: AuthState;
   dispatch: Dispatch<AuthAction>;
@@ -31,15 +31,13 @@ interface AuthContextType {
   handlePageChange: (page: "login" | "signup") => void;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(
-  undefined
-);
+export const AppContext = createContext<AppContextType | undefined>(undefined);
 
-interface AuthProviderProps {
+interface AppProviderProps {
   children: ReactNode;
 }
 
-const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [page, setPage] = useState<"login" | "signup">("login");
   const [todos, setTodos] = useState<Todo[]>([]);
   const [state, dispatch] = useReducer(authReducer, initialState);
@@ -54,7 +52,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider
+    <AppContext.Provider
       value={{
         page,
         todos,
@@ -66,12 +64,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }}
     >
       {children}
-    </AuthContext.Provider>
+    </AppContext.Provider>
   );
 };
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
+  const context = useContext(AppContext);
 
   if (context === undefined) {
     throw new Error("useAuth must be used within an AuthProvider");
@@ -79,4 +77,4 @@ export const useAuth = () => {
   return context;
 };
 
-export default AuthProvider;
+export default AppProvider;

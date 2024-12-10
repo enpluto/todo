@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Todo, useAuth } from "../../contexts/AuthContext";
+import { Todo, useAuth } from "../../contexts/AppContext";
 import { fetchTodos } from "../../reducers/todos/todoActions";
 import EmptyList from "./EmptyList";
 import NavBar from "./NavBar";

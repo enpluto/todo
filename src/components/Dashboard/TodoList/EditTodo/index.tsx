@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Todo, useAuth } from "../../../../contexts/AuthContext";
+import { Todo, useAuth } from "../../../../contexts/AppContext";
 import { editTodo } from "../../../../reducers/todos/todoActions";
 
 const EditTodo = ({ todo }: { todo: Todo }) => {

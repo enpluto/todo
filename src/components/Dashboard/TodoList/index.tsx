@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { Todo, useAuth } from "../../../contexts/AuthContext";
+import { Todo, useAuth } from "../../../contexts/AppContext";
 import { deleteCompletedTodos } from "../../../reducers/todos/todoActions";
 import TodoItem from "./TodoItem";
 
