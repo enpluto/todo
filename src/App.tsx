@@ -1,18 +1,18 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
 import Layout from "./components/Layout";
-import AuthProvider from "./contexts/AppContext";
+import AppContextProvider from "./contexts/AppContext";
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter basename="/todo">
+    <AppContextProvider>
+      <HashRouter>
         <Routes>
           <Route path="/" element={<Layout />} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+      </HashRouter>
+    </AppContextProvider>
   );
 }
 
