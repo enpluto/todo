@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AppContext.tsx";
+import { useAppContext } from "../../contexts/AppContext.tsx";
 import { userLogin } from "../../reducers/auth/authActions.ts";
 import InputField from "../InputField.tsx";
 import { inputDataset } from "./data.ts";
@@ -12,7 +12,7 @@ export interface LoginDataType {
 }
 
 const Login = () => {
-  const { state, dispatch, handlePageChange } = useAuth();
+  const { state, dispatch, handlePageChange } = useAppContext();
   const navigate = useNavigate();
   const storedEmail = localStorage.getItem("email") || "";
 

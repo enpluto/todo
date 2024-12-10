@@ -68,11 +68,11 @@ const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
+export const useAppContext = () => {
   const context = useContext(AppContext);
 
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error("useAppContext must be used within an AuthProvider");
   }
   return context;
 };

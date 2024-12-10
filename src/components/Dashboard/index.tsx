@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Todo, useAuth } from "../../contexts/AppContext";
+import { Todo, useAppContext } from "../../contexts/AppContext";
 import { fetchTodos } from "../../reducers/todos/todoActions";
 import EmptyList from "./EmptyList";
 import NavBar from "./NavBar";
@@ -16,7 +16,7 @@ interface TodoContainerProps {
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("全部");
-  const { state, todos, setTodos } = useAuth();
+  const { state, todos, setTodos } = useAppContext();
   const navigate = useNavigate();
 
   const handleFetchTodos = async (token: string) => {

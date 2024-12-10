@@ -1,11 +1,11 @@
 import checkIcon from "../../assets/check.svg";
 import mainImage from "../../assets/image.svg";
-import { useAuth } from "../../contexts/AppContext";
+import { useAppContext } from "../../contexts/AppContext";
 import Login from "../Login";
 import SignUp from "../SignUp";
 
 function Layout() {
-  const { page } = useAuth();
+  const { page } = useAppContext();
 
   return (
     <main className="pt-12 md:pt-20 max-w-[375px] md:max-w-[1028px] mx-auto flex flex-col md:flex-row justify-evenly items-center">
