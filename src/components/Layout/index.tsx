@@ -1,8 +1,8 @@
+import { useAuth } from "../../contexts/AuthContext";
+import Login from "../Login";
+import SignUp from "../SignUp";
 import checkIcon from "./assets/check.svg";
 import mainImage from "./assets/image.svg";
-import Login from "./components/Login";
-import SignUp from "./components/SignUp";
-import { useAuth } from "./contexts/AuthContext";
 
 function Layout() {
   const { page } = useAuth();
