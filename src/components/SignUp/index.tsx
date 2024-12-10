@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/AppContext";
 import { userSignUp } from "../../reducers/auth/authActions";
 import InputField from "../InputField";
 import { inputDataset } from "./data";

@@ -1,4 +1,4 @@
-import { Todo } from "../../contexts/AuthContext";
+import { Todo } from "../../contexts/AppContext";
 
 const baseUrl = "https://todolist-api.hexschool.io";
 const headers = {

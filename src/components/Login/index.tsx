@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/AppContext.tsx";
 import { userLogin } from "../../reducers/auth/authActions.ts";
 import InputField from "../InputField.tsx";
 import { inputDataset } from "./data.ts";

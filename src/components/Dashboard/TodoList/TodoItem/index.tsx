@@ -1,4 +1,4 @@
-import { Todo, useAuth } from "../../../../contexts/AuthContext";
+import { Todo, useAuth } from "../../../../contexts/AppContext";
 import { deleteTodo } from "../../../../reducers/todos/todoActions";
 import EditTodo from "../EditTodo";
 import TodoStatus from "../TodoStatus";

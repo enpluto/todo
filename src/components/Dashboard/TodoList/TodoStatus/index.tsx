@@ -1,4 +1,4 @@
-import { Todo, useAuth } from "../../../../contexts/AuthContext";
+import { Todo, useAuth } from "../../../../contexts/AppContext";
 import { toggleTodo } from "../../../../reducers/todos/todoActions";
 
 const TodoStatus = ({ todo }: { todo: Todo }) => {
