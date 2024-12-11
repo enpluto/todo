@@ -14,6 +14,7 @@ export type AuthAction =
 export const authReducer = (state: AuthState, action: AuthAction) => {
   switch (action.type) {
     case "LOGIN_SUCCESS":
+    case "SET_TOKEN":
       return {
         ...state,
         token: action.payload.token,
@@ -22,11 +23,6 @@ export const authReducer = (state: AuthState, action: AuthAction) => {
       return {
         ...state,
         token: null,
-      };
-    case "SET_TOKEN":
-      return {
-        ...state,
-        token: action.payload.token,
       };
     default:
       return state;
