@@ -10,7 +10,8 @@ export interface AuthState {
 
 export type AuthAction =
   | { type: "LOGIN_SUCCESS"; payload: { token: string; username: string } }
-  | { type: "LOGOUT_SUCCESS" };
+  | { type: "LOGOUT_SUCCESS" }
+  | { type: "SET_TOKEN"; payload: { token: string } };
 
 export const authReducer = (state: AuthState, action: AuthAction) => {
   switch (action.type) {
@@ -24,6 +25,11 @@ export const authReducer = (state: AuthState, action: AuthAction) => {
       return {
         ...state,
         token: null,
+      };
+    case "SET_TOKEN":
+      return {
+        ...state,
+        token: action.payload.token,
       };
     default:
       return state;
