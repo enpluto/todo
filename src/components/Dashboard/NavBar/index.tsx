@@ -6,7 +6,8 @@ import { userLogout } from "../../../reducers/auth/authActions";
 const NavBar = () => {
   const navigate = useNavigate();
   const { state, dispatch } = useAppContext();
-  const { username, token } = state;
+  const { token } = state;
+  const username = localStorage.getItem("username");
 
   const handleLogout = async (token: string) => {
     if (token) await userLogout({ token, dispatch });
