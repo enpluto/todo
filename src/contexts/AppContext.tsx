@@ -22,6 +22,7 @@ export interface Todo {
 }
 
 interface AppContextType {
+  localToken: string | null;
   page: "login" | "signup";
   state: AuthState;
   dispatch: Dispatch<AuthAction>;
@@ -41,6 +42,7 @@ const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [page, setPage] = useState<"login" | "signup">("login");
   const [todos, setTodos] = useState<Todo[]>([]);
   const [state, dispatch] = useReducer(authReducer, initialState);
+  const localToken = localStorage.getItem("localToken");
 
   const handleFetchTodos = async (token: string) => {
     const todoDataset = await fetchTodos(token);
@@ -54,6 +56,7 @@ const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
+        localToken,
         page,
         todos,
         setTodos,
