@@ -27,7 +27,6 @@ interface AppContextType {
   state: AuthState;
   dispatch: Dispatch<AuthAction>;
   todos: Todo[];
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
   handleFetchTodos: (token: string) => Promise<void>;
   handlePageChange: (page: "login" | "signup") => void;
 }
@@ -59,7 +58,6 @@ const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         localToken,
         page,
         todos,
-        setTodos,
         state,
         dispatch,
         handleFetchTodos,
