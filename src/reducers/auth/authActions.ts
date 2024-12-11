@@ -92,9 +92,11 @@ export const userLogin = async ({
       const userData = await response.json();
       dispatch({
         type: "LOGIN_SUCCESS",
-        payload: { token: userData.token, username: userData.nickname },
+        payload: { token: userData.token },
       });
       localStorage.setItem("email", data.email as string);
+      localStorage.setItem("localToken", userData.token);
+      localStorage.setItem("username", userData.nickname);
     }
   } catch (error) {
     throw error;
@@ -118,6 +120,8 @@ export const userLogout = async ({ token, dispatch }: UserLogoutParams) => {
       dispatch({
         type: "LOGOUT_SUCCESS",
       });
+      localStorage.removeItem("localToken");
+      localStorage.removeItem("username");
     }
   } catch (error) {
     throw error;

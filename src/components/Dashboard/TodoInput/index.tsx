@@ -1,20 +1,15 @@
 import { useState } from "react";
 import plusIcon from "../../../assets/plus.svg";
 import { useAppContext } from "../../../contexts/AppContext";
-import { createTodo, fetchTodos } from "../../../reducers/todos/todoActions";
+import { createTodo } from "../../../reducers/todos/todoActions";
 
 const TodoInput = () => {
   const [text, setText] = useState("");
-  const { state, setTodos } = useAppContext();
+  const { state, handleFetchTodos } = useAppContext();
   const { token } = state;
 
   const handleTypeIn = (e: React.ChangeEvent<HTMLInputElement>) =>
     setText(e.target.value);
-
-  const handleFetchTodos = async (token: string) => {
-    const todoDataset = await fetchTodos(token);
-    setTodos(todoDataset);
-  };
 
   const handleCreateTodo = async (token: string, text: string) => {
     if (!text) return;
