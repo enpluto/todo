@@ -16,7 +16,7 @@ interface TodoContainerProps {
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("全部");
-  const { state, todos, setTodos } = useAppContext();
+  const { todos, setTodos, dispatch, localToken } = useAppContext();
   const navigate = useNavigate();
 
   const handleFetchTodos = async (token: string) => {
@@ -25,12 +25,13 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    if (!state.token) {
+    if (!localToken) {
       navigate("/");
     } else {
-      handleFetchTodos(state.token);
+      dispatch({ type: "SET_TOKEN", payload: { token: localToken } });
+      handleFetchTodos(localToken);
     }
-  }, [state.token]);
+  }, [localToken]);
 
   const TodoContainer = ({
     todos,

@@ -12,7 +12,7 @@ export interface LoginDataType {
 }
 
 const Login = () => {
-  const { state, dispatch, handlePageChange } = useAppContext();
+  const { state, dispatch, handlePageChange, localToken } = useAppContext();
   const navigate = useNavigate();
   const storedEmail = localStorage.getItem("email") || "";
 
@@ -29,13 +29,16 @@ const Login = () => {
   });
 
   useEffect(() => {
-    if (state.token) {
+    if (localToken && state.token !== localToken) {
+      dispatch({ type: "SET_TOKEN", payload: { token: localToken } });
+    } else if (state.token) {
       navigate("/dashboard");
     }
-  }, [state.token, navigate]);
+  }, [dispatch, navigate, state.token, localToken]);
 
   const handleLogin = async (data: LoginDataType) => {
     await userLogin({ dispatch, data, setError });
+    navigate("/dashboard");
   };
 
   const initInputs = inputDataset.map((input) => (
